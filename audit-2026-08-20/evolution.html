@@ -1,0 +1,641 @@
+<title>Hridoy's Build Evolution</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+Bengali:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#eceff4; --surface:#ffffff; --surface-2:#f4f6f9; --ink:#141821;
+  --muted:#5b6472; --faint:#8a93a2; --hairline:#dce1e9;
+  --accent:#b4530a; --accent-soft:#f3e3d5;
+  --ok:#1f8a44; --warn:#946200; --crit:#b3261e; --ai:#3a5bbf;
+  --ok-soft:#e2f2e7; --warn-soft:#f6ecd4; --crit-soft:#f7e0de; --ai-soft:#e2e8f8;
+  --on-accent:#ffffff;
+  --heat0:transparent; --heat1:rgba(180,83,10,.16); --heat2:rgba(180,83,10,.34);
+  --heat3:rgba(180,83,10,.58); --heat4:rgba(180,83,10,.86);
+  --shadow:0 1px 2px rgba(20,24,33,.05),0 8px 24px rgba(20,24,33,.06);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0d1117; --surface:#161b22; --surface-2:#1b2028; --ink:#e6edf3;
+  --muted:#9aa4b2; --faint:#6e7887; --hairline:#29313c;
+  --accent:#f0883e; --accent-soft:#3a2a1c;
+  --ok:#4ac26b; --warn:#d1a13a; --crit:#f0655a; --ai:#7f9bec;
+  --ok-soft:#12251a; --warn-soft:#2a2210; --crit-soft:#2e1614; --ai-soft:#171d33;
+  --on-accent:#161b22;
+  --heat1:rgba(240,136,62,.16); --heat2:rgba(240,136,62,.34);
+  --heat3:rgba(240,136,62,.6); --heat4:rgba(240,136,62,.9);
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+}}
+:root[data-theme="dark"]{
+  --ground:#0d1117; --surface:#161b22; --surface-2:#1b2028; --ink:#e6edf3;
+  --muted:#9aa4b2; --faint:#6e7887; --hairline:#29313c;
+  --accent:#f0883e; --accent-soft:#3a2a1c;
+  --ok:#4ac26b; --warn:#d1a13a; --crit:#f0655a; --ai:#7f9bec;
+  --ok-soft:#12251a; --warn-soft:#2a2210; --crit-soft:#2e1614; --ai-soft:#171d33;
+  --on-accent:#161b22;
+  --heat1:rgba(240,136,62,.16); --heat2:rgba(240,136,62,.34);
+  --heat3:rgba(240,136,62,.6); --heat4:rgba(240,136,62,.9);
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,sans-serif; font-size:16px; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.bn{font-family:"Noto Sans Bengali","IBM Plex Sans",sans-serif; line-height:1.7;}
+.wrap{width:min(1080px,92vw); margin:0 auto;}
+h1,h2,h3{font-family:"IBM Plex Serif",Georgia,serif; text-wrap:balance; line-height:1.2; margin:0;}
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums;}
+a{color:var(--accent); text-decoration:none;}
+a:hover{text-decoration:underline;}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:3px;}
+
+/* header */
+header{border-bottom:1px solid var(--hairline); background:linear-gradient(var(--surface-2),var(--ground));}
+.hd{padding:clamp(2.4rem,6vw,4.2rem) 0 2rem;}
+.eyebrow{font-family:"IBM Plex Mono",monospace; font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; color:var(--accent); margin:0 0 1rem;}
+h1{font-size:clamp(2rem,5.5vw,3.3rem); font-weight:600; letter-spacing:-.01em;}
+.sub{color:var(--muted); font-size:1.06rem; max-width:60ch; margin:1rem 0 0;}
+.sub.bn{margin-top:.5rem; font-size:.98rem;}
+
+/* metadata bar */
+.meta{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1px; background:var(--hairline);
+  border:1px solid var(--hairline); border-radius:10px; overflow:hidden; margin:2rem 0 0; box-shadow:var(--shadow);}
+.meta div{background:var(--surface); padding:.85rem 1rem;}
+.meta dt{font-family:"IBM Plex Mono",monospace; font-size:.66rem; letter-spacing:.14em; text-transform:uppercase; color:var(--faint); margin:0 0 .3rem;}
+.meta dd{margin:0; font-size:.9rem; font-weight:500;}
+.meta dd small{color:var(--muted); font-weight:400;}
+
+/* theme toggle */
+.tt{position:fixed; top:14px; right:14px; z-index:50; background:var(--surface); color:var(--ink);
+  border:1px solid var(--hairline); border-radius:999px; padding:.4rem .8rem; font-size:.78rem; cursor:pointer;
+  font-family:"IBM Plex Mono",monospace; box-shadow:var(--shadow);}
+.tt:hover{border-color:var(--accent);}
+
+section{padding:2.8rem 0; border-top:1px solid var(--hairline);}
+.sec-h{display:flex; align-items:baseline; gap:.8rem; margin:0 0 .4rem;}
+.sec-h h2{font-size:clamp(1.35rem,3vw,1.9rem); font-weight:600;}
+.sec-n{font-family:"IBM Plex Mono",monospace; font-size:.8rem; color:var(--accent); font-weight:500;}
+.sec-lead{color:var(--muted); max-width:70ch; margin:.2rem 0 1.8rem;}
+.sec-lead.bn{font-size:.95rem; margin-top:-.9rem;}
+
+/* legend */
+.legend{display:flex; flex-wrap:wrap; gap:.5rem .9rem; margin:0 0 1.5rem; font-size:.8rem; color:var(--muted);}
+.legend span{display:inline-flex; align-items:center; gap:.4rem;}
+.dot{width:10px; height:10px; border-radius:3px; display:inline-block;}
+.dot.ok{background:var(--ok)} .dot.warn{background:var(--warn)} .dot.crit{background:var(--crit)} .dot.ai{background:var(--ai)} .dot.acc{background:var(--accent)}
+
+/* heatmap */
+.scrollx{overflow-x:auto; border:1px solid var(--hairline); border-radius:10px; background:var(--surface); box-shadow:var(--shadow);}
+table.heat{border-collapse:collapse; width:100%; min-width:760px; font-size:.78rem;}
+table.heat th,table.heat td{padding:.5rem .35rem; text-align:center; border:1px solid var(--hairline);}
+table.heat thead th{font-family:"IBM Plex Mono",monospace; font-weight:500; color:var(--muted); font-size:.68rem; white-space:nowrap; background:var(--surface-2);}
+table.heat tbody th{text-align:left; font-family:"IBM Plex Sans",sans-serif; font-weight:600; white-space:nowrap; position:sticky; left:0; background:var(--surface); z-index:1;}
+.cell{font-family:"IBM Plex Mono",monospace; font-weight:500; color:var(--ink);}
+.h0{background:var(--heat0); color:var(--faint)} .h1{background:var(--heat1)} .h2{background:var(--heat2)}
+.h3{background:var(--heat3)} .h4{background:var(--heat4); color:var(--on-accent)}
+.mstone{color:var(--accent); font-weight:700;}
+
+/* nav */
+.datenav{position:sticky; top:0; z-index:20; background:color-mix(in srgb,var(--ground) 90%,transparent);
+  backdrop-filter:blur(8px); border-bottom:1px solid var(--hairline); padding:.6rem 0;}
+.datenav .wrap{display:flex; gap:.4rem; overflow-x:auto; }
+.datenav a{font-family:"IBM Plex Mono",monospace; font-size:.72rem; white-space:nowrap; color:var(--muted);
+  padding:.25rem .55rem; border:1px solid var(--hairline); border-radius:999px;}
+.datenav a:hover{color:var(--accent); border-color:var(--accent); text-decoration:none;}
+
+/* timeline */
+.tl{position:relative;}
+.day{position:relative; padding:0 0 2.2rem 0;}
+.day-h{display:flex; flex-wrap:wrap; align-items:baseline; gap:.6rem .9rem; margin:0 0 .3rem; scroll-margin-top:60px;}
+.day-date{font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:1.05rem; color:var(--ink);}
+.day-dow{font-family:"IBM Plex Mono",monospace; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--accent);
+  border:1px solid var(--accent-soft); background:var(--accent-soft); padding:.1rem .5rem; border-radius:999px;}
+.day-title{font-family:"IBM Plex Serif",serif; font-weight:600; font-size:1.08rem;}
+.parallel{font-family:"IBM Plex Mono",monospace; font-size:.68rem; color:var(--warn); border:1px solid var(--warn); border-radius:999px; padding:.05rem .5rem;}
+.card{background:var(--surface); border:1px solid var(--hairline); border-left:3px solid var(--accent);
+  border-radius:0 10px 10px 0; padding:1.1rem 1.25rem; box-shadow:var(--shadow);}
+.card .en{margin:.1rem 0 .5rem;}
+.card .bn{color:var(--muted); font-size:.94rem; padding:.55rem .8rem; background:var(--surface-2); border-radius:8px; border-left:2px solid var(--hairline);}
+.rowlabel{font-family:"IBM Plex Mono",monospace; font-size:.66rem; letter-spacing:.1em; text-transform:uppercase; color:var(--faint); margin-right:.4rem;}
+.chips{display:flex; flex-wrap:wrap; gap:.4rem; margin:.7rem 0 0;}
+.chip{font-family:"IBM Plex Mono",monospace; font-size:.72rem; padding:.15rem .5rem; border-radius:6px; border:1px solid var(--hairline); background:var(--surface-2); color:var(--muted); white-space:nowrap;}
+.chip.sys{color:var(--ink); border-color:var(--accent-soft); background:var(--accent-soft);}
+.chip.sha{color:var(--ai);}
+.chip.ok{color:var(--ok); border-color:var(--ok); background:var(--ok-soft);}
+.chip.warn{color:var(--warn); border-color:var(--warn); background:var(--warn-soft);}
+.chip.crit{color:var(--crit); border-color:var(--crit); background:var(--crit-soft);}
+.loop{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:.5rem; margin:.8rem 0 0;}
+.loop div{font-size:.82rem; background:var(--surface-2); border-radius:8px; padding:.5rem .7rem; border:1px solid var(--hairline);}
+.loop b{display:block; font-family:"IBM Plex Mono",monospace; font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; color:var(--faint); margin-bottom:.2rem; font-weight:500;}
+.caused{margin:.8rem 0 0; padding:.55rem .8rem; border-left:3px solid var(--accent); background:var(--accent-soft); border-radius:0 8px 8px 0; font-size:.86rem;}
+.caused .rowlabel{color:var(--accent);}
+
+/* generic cards grid */
+.grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1rem;}
+.pcard{background:var(--surface); border:1px solid var(--hairline); border-radius:10px; padding:1.1rem 1.2rem; box-shadow:var(--shadow);}
+.pcard h3{font-size:1.02rem; margin:0 0 .5rem; display:flex; gap:.5rem; align-items:baseline;}
+.pcard h3 .tag{font-family:"IBM Plex Mono",monospace; font-size:.66rem; padding:.05rem .45rem; border-radius:5px;}
+.pcard p{margin:.35rem 0; font-size:.9rem;}
+.pcard .bn{color:var(--muted); font-size:.88rem;}
+.state{margin:.5rem 0; display:grid; grid-template-columns:auto 1fr; gap:.15rem .7rem; font-size:.86rem;}
+.state dt{font-family:"IBM Plex Mono",monospace; font-size:.64rem; letter-spacing:.08em; text-transform:uppercase; color:var(--faint); padding-top:.15rem;}
+
+/* tables */
+table.data{border-collapse:collapse; width:100%; min-width:640px; font-size:.85rem;}
+table.data th,table.data td{padding:.55rem .7rem; border-bottom:1px solid var(--hairline); text-align:left; vertical-align:top;}
+table.data thead th{font-family:"IBM Plex Mono",monospace; font-size:.66rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); background:var(--surface-2);}
+table.data td.mono,table.data td .mono{font-family:"IBM Plex Mono",monospace;}
+table.data tbody tr:hover{background:var(--surface-2);}
+
+/* execution ladder */
+.ladder{display:flex; flex-wrap:wrap; gap:.35rem; align-items:center; margin:.4rem 0 1.2rem;}
+.rung{font-family:"IBM Plex Mono",monospace; font-size:.74rem; padding:.28rem .6rem; border-radius:6px; border:1px solid var(--hairline); background:var(--surface);}
+.rung.done{border-color:var(--ok); color:var(--ok); background:var(--ok-soft);}
+.rung.skip{border-color:var(--warn); color:var(--warn); background:var(--warn-soft); text-decoration:line-through;}
+.rung.stop{border-color:var(--crit); color:var(--crit); background:var(--crit-soft);}
+.arrow{color:var(--faint);}
+
+/* summary rail */
+.evo{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1rem;}
+.evo .pcard b.mono{color:var(--accent);}
+blockquote{margin:1.2rem 0 0; padding:1rem 1.3rem; border-left:3px solid var(--accent); background:var(--surface); border-radius:0 10px 10px 0; box-shadow:var(--shadow);}
+blockquote p{margin:.3rem 0;}
+footer{border-top:1px solid var(--hairline); padding:2.4rem 0 3.4rem; color:var(--muted); font-size:.82rem;}
+footer .mono{color:var(--faint); font-size:.76rem;}
+.disclaim{background:var(--surface-2); border:1px dashed var(--hairline); border-radius:10px; padding:1rem 1.2rem; margin:1.4rem 0 0; font-size:.84rem; color:var(--muted);}
+hr.rule{border:none; border-top:1px solid var(--hairline); margin:2rem 0;}
+</style>
+
+<button class="tt" id="tt" aria-label="Toggle colour theme">◐ theme</button>
+
+<header>
+  <div class="wrap hd">
+    <p class="eyebrow">Read-only forensic reconstruction · Evidence cutoff 2026-08-20</p>
+    <h1>Hridoy Samadder — Day-by-Day Build &amp; Decision Evolution</h1>
+    <p class="sub">A traceable operating history reconstructed from git commits, pull requests, CI runs, append-only audit logs, decision records and deployment config across nine repositories — not retrospective storytelling. Every claim is bound to a date, a repository and a commit SHA.</p>
+    <p class="sub bn">গিট কমিট, PR, CI রান, append-only অডিট-লগ, ডিসিশন-রেকর্ড আর ডিপ্লয় কনফিগ থেকে দিন-ধরে-দিন পুনর্গঠিত একটি যাচাইযোগ্য কর্ম-ইতিহাস — স্মৃতি বা গল্প নয়। প্রতিটি দাবি তারিখ, রিপো আর commit SHA-তে বাঁধা।</p>
+    <dl class="meta">
+      <div><dt>Verified span</dt><dd>2026-06-08 → 2026-08-20 <small>(~10.5 wks)</small></dd></div>
+      <div><dt>Systems traced</dt><dd>8 build systems + 1 showcase</dd></div>
+      <div><dt>Commits (3 core repos)</dt><dd>1,404 <small>(952 + 441 + 11)</small></dd></div>
+      <div><dt>AI / human split</dt><dd>heavy AI exec, human-owned loop</dd></div>
+      <div><dt>Evidence cutoff</dt><dd class="mono">2026-08-20 ~21:29 UTC</dd></div>
+      <div><dt>Audit compiled</dt><dd class="mono">2026-08-21, Asia/Dhaka</dd></div>
+    </dl>
+  </div>
+</header>
+
+<nav class="datenav" aria-label="Jump to date">
+  <div class="wrap">
+    <a href="#d0608">06-08</a><a href="#d0616">06-16</a><a href="#d0621">06-21</a><a href="#d0708">07-08</a>
+    <a href="#d0719">07-19</a><a href="#d0722">07-22</a><a href="#d0724">07-24</a><a href="#d0725">07-25→29</a>
+    <a href="#d0728">07-28</a><a href="#d0807">08-07</a><a href="#d0810">08-10→12</a><a href="#d0815">08-15→16</a>
+    <a href="#d0818">08-18</a><a href="#d0819">08-19</a><a href="#d0820">08-20</a>
+    <a href="#heat">grid</a><a href="#decisions">decisions</a><a href="#failures">failures</a><a href="#metrics">metrics</a><a href="#exec">exec-state</a><a href="#summary">summary</a>
+  </div>
+</nav>
+
+<!-- ============ HEATMAP ============ -->
+<section id="heat">
+  <div class="wrap">
+    <div class="sec-h"><span class="sec-n">§1</span><h2>Cross-project activity — systems × weeks</h2></div>
+    <p class="sec-lead">Commit volume per system per week (from git history of the three core repos; other systems shown as milestone weeks ●). Multiple systems moving in the same week is the norm, not the exception.</p>
+    <p class="sec-lead bn">প্রতি সপ্তাহে প্রতি সিস্টেমে commit-সংখ্যা (তিন মূল রিপোর হিস্ট্রি থেকে; বাকি সিস্টেম milestone-সপ্তাহে ● দিয়ে)। একই সপ্তাহে একাধিক সিস্টেম চলা এখানে ব্যতিক্রম নয়, নিয়ম।</p>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--heat1)"></span>1–10</span>
+      <span><span class="dot" style="background:var(--heat2)"></span>11–40</span>
+      <span><span class="dot" style="background:var(--heat3)"></span>41–100</span>
+      <span><span class="dot" style="background:var(--heat4)"></span>100+</span>
+      <span><span class="mstone">●</span> milestone ship</span>
+    </div>
+    <div class="scrollx">
+      <table class="heat">
+        <thead><tr>
+          <th>System \ Week</th>
+          <th>Jun 8</th><th>Jun 15</th><th>Jun 22</th><th>Jun 29</th><th>Jul 6</th><th>Jul 13</th><th>Jul 20</th><th>Jul 27</th><th>Aug 3</th><th>Aug 10</th><th>Aug 17</th>
+        </tr></thead>
+        <tbody>
+          <tr><th>OushodhOS (pharmacy)</th>
+            <td class="cell h3">99</td><td class="cell h3">46</td><td class="cell h3">44</td><td class="cell h3">42</td><td class="cell h2">40</td><td class="cell h3">58</td><td class="cell h4">175</td><td class="cell h2">26</td><td class="cell h4">147</td><td class="cell h4">202</td><td class="cell h3">73</td></tr>
+          <tr><th>HS-OS / HRIDOY</th>
+            <td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h3">44</td><td class="cell h1">4</td><td class="cell h4">132</td><td class="cell h4">204</td><td class="cell h3">57</td><td class="cell h0">·</td><td class="cell h0">·</td></tr>
+          <tr><th>masterdatabase</th>
+            <td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h2">11</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td></tr>
+          <tr><th>DSE-AI-TRADER</th>
+            <td class="cell h0">·</td><td class="cell h0 mstone">●</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td></tr>
+          <tr><th>EduVerse AI</th>
+            <td class="cell h0">·</td><td class="cell h0 mstone">●</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td></tr>
+          <tr><th>TechStock-OS</th>
+            <td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0 mstone">●</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td></tr>
+          <tr><th>AVATOR AI</th>
+            <td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0 mstone">●</td></tr>
+          <tr><th>Identity system</th>
+            <td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0 mstone">●</td></tr>
+          <tr><th>evidence-showcase</th>
+            <td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0">·</td><td class="cell h0 mstone">●</td><td class="cell h0">·</td><td class="cell h0">·</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TIMELINE ============ -->
+<section id="timeline">
+  <div class="wrap">
+    <div class="sec-h"><span class="sec-n">§2</span><h2>The day-by-day timeline</h2></div>
+    <p class="sec-lead">Each meaningful day where dated evidence exists. Days without material evidence are not invented. Each card preserves the causal chain: what existed → what triggered work → decision → change → who did what → result → what it caused next.</p>
+    <p class="sec-lead bn">যেসব দিনে dated evidence আছে শুধু সেগুলো। প্রমাণহীন দিন বানানো হয়নি। প্রতিটি কার্ডে কার্যকারণ-শৃঙ্খল রাখা: আগে কী ছিল → কেন কাজ শুরু → সিদ্ধান্ত → পরিবর্তন → কে কী করল → ফল → পরে কী তৈরি করল।</p>
+    <div class="legend">
+      <span><span class="dot acc"></span>anchor / evidence</span>
+      <span><span class="dot ai"></span>SHA / AI-authored</span>
+      <span><span class="dot ok"></span>verified / passed</span>
+      <span><span class="dot warn"></span>superseded / in-progress</span>
+      <span><span class="dot crit"></span>failure caught</span>
+    </div>
+
+    <div class="tl">
+
+      <!-- 06-08 -->
+      <article class="day">
+        <div class="day-h" id="d0608"><span class="day-date">2026-06-08</span><span class="day-dow">Mon</span><span class="day-title">OushodhOS begins — day one, 35 commits</span></div>
+        <div class="card">
+          <p class="en"><span class="rowlabel">Trigger</span>A pharmacy-counter problem: stock, sales and medicine identity handled by hand. Work opens on a Bangla-first pharmacy POS/inventory SaaS. Two of the builder's git identities (Hridoy + "Choton") and AI sessions commit from the first day.</p>
+          <p class="bn"><span class="rowlabel">বাংলা</span>ফার্মেসি-কাউন্টারের সমস্যা: স্টক, বিক্রি, ওষুধ-পরিচয় হাতে সামলানো। প্রথম দিনেই বাংলা-ফার্স্ট ফার্মেসি POS/ইনভেন্টরি SaaS-এর কাজ শুরু — Hridoy + "Choton" দুই identity আর AI একসাথে commit করে।</p>
+          <div class="chips"><span class="chip sys">pharmacy-os</span><span class="chip">35 commits</span><span class="chip">authors: Hridoy · Choton · AI</span></div>
+          <div class="caused"><span class="rowlabel">→ caused</span>The full-stack skeleton (FastAPI backend + React/Capacitor frontend) that every later feature builds on.</div>
+        </div>
+      </article>
+
+      <!-- 06-16 -->
+      <article class="day">
+        <div class="day-h" id="d0616"><span class="day-date">2026-06-16</span><span class="day-dow">Tue</span><span class="day-title">DSE-AI-TRADER shipped — deliberately LLM-free</span><span class="parallel">2 systems</span></div>
+        <div class="card">
+          <p class="en"><span class="rowlabel">Decision</span>A Dhaka Stock Exchange terminal is built with <b>no LLM at all</b> — every generated sentence must cite a measured value. Same week, pharmacy-os OCR gets "biggest text = medicine name" brand-priority logic.</p>
+          <p class="bn"><span class="rowlabel">বাংলা</span>ঢাকা স্টক এক্সচেঞ্জ টার্মিনাল — <b>কোনো LLM ছাড়াই</b>; প্রতিটি বাক্যকে মাপা মান উদ্ধৃত করতে হবে। এটা সামর্থ্যের অভাব নয়, স্থাপত্য-বিচার (correctness/cost)। একই সপ্তাহে pharmacy OCR-এ "সবচেয়ে বড় লেখা = ওষুধের নাম"।</p>
+          <div class="chips"><span class="chip sys">DSE-AI-TRADER</span><span class="chip sha">eacb9d4</span><span class="chip">37 Python files · 0 LLM refs</span><span class="chip sys">pharmacy-os</span></div>
+          <div class="caused"><span class="rowlabel">→ pattern</span>First instance of a recurring signature: <b>choosing not to use an LLM</b> when determinism serves correctness and cost. Re-used in AVATOR (Aug 19).</div>
+        </div>
+      </article>
+
+      <!-- 06-21 -->
+      <article class="day">
+        <div class="day-h" id="d0621"><span class="day-date">2026-06-21</span><span class="day-dow">Sun</span><span class="day-title">EduVerse — measured cost, not estimated</span></div>
+        <div class="card">
+          <p class="en"><span class="rowlabel">Change</span>The Bangla tutor's token/cost tracking switches from an estimate to <b>real Gemini <code>usageMetadata</code></b>. The HEAD commit message states this verbatim — a commit-level proof of "measured vs estimated" cost discipline. Authored by "Choton" (= Hridoy).</p>
+          <p class="bn"><span class="rowlabel">বাংলা</span>বাংলা টিউটরের টোকেন/খরচ হিসাব <b>আন্দাজ থেকে আসল Gemini <code>usageMetadata</code></b>-তে বদলায়। HEAD commit-বার্তাই এর প্রমাণ — "মাপা বনাম আন্দাজ" খরচ-নীতি। লেখক "Choton" (= Hridoy)।</p>
+          <div class="chips"><span class="chip sys">EDU-VERSE-OS</span><span class="chip sha">ec75289</span><span class="chip">author: Choton@oushodhos.com</span><span class="chip ok">measured cost</span></div>
+          <div class="caused"><span class="rowlabel">→ before/after</span><b>Before:</b> estimate-only cost. <b>After:</b> real API usage metering. Prior estimate-only state <b>superseded</b>.</div>
+        </div>
+      </article>
+
+      <!-- 07-08 -->
+      <article class="day">
+        <div class="day-h" id="d0708"><span class="day-date">2026-07-08</span><span class="day-dow">Wed</span><span class="day-title">HS-OS / HRIDOY begins — voice-first AI, 35 commits</span><span class="parallel">2 systems</span></div>
+        <div class="card">
+          <p class="en"><span class="rowlabel">Trigger</span>A second flagship opens: a voice-first "mission control" AI, hand-built with <b>zero AI-SDK dependencies</b> (runtime deps = only <code>react</code> + <code>react-dom</code>). Foundation + spec-audit entries (AUDIT-LOG Entry 0–1). pharmacy-os runs in parallel.</p>
+          <p class="bn"><span class="rowlabel">বাংলা</span>দ্বিতীয় ফ্ল্যাগশিপ: ভয়েস-ফার্স্ট "মিশন কন্ট্রোল" AI — <b>কোনো AI-SDK ছাড়াই</b> হাতে বানানো (runtime deps = শুধু <code>react</code>+<code>react-dom</code>)। Foundation + spec-audit (AUDIT-LOG Entry 0–1)। pharmacy সমান্তরালে চলছে।</p>
+          <div class="chips"><span class="chip sys">hs-os</span><span class="chip">35 commits</span><span class="chip">deps: react, react-dom only</span><span class="chip">append-only AUDIT-LOG opens</span></div>
+          <div class="caused"><span class="rowlabel">→ caused</span>The append-only decision log (D-series) and audit log that make the whole partnership's friction visible and correctable.</div>
+        </div>
+      </article>
+
+      <!-- 07-19 -->
+      <article class="day">
+        <div class="day-h" id="d0719"><span class="day-date">2026-07-19</span><span class="day-dow">Sun</span><span class="day-title">Pharmacy security step-1 + own Bluetooth print plugin</span></div>
+        <div class="card">
+          <p class="en"><span class="rowlabel">Change</span>Signup OTP "stops being a formality"; cost price becomes owner-only (hidden in UI <em>and</em> blocked on the wire); a hand-written Bluetooth print plugin replaces any third-party print app. First real security posture.</p>
+          <p class="bn"><span class="rowlabel">বাংলা</span>সাইনআপ OTP আর "নামকাওয়াস্তে" নয়; ক্রয়মূল্য শুধু মালিকের চোখে (UI-তে লুকানো <em>এবং</em> নেটওয়ার্কেও আটকানো); নিজের হাতে-লেখা Bluetooth print plugin — তৃতীয়-পক্ষ অ্যাপ বাদ।</p>
+          <div class="chips"><span class="chip sys">pharmacy-os</span><span class="chip sha">47a3a66</span><span class="chip sha">40eb8e0</span><span class="chip sha">320ee85</span><span class="chip ok">cost-price owner-only</span></div>
+          <div class="caused"><span class="rowlabel">→ caused</span>The security thread that becomes the full Aug 10–12 hardening pass (auth, tenant walls, leak masks).</div>
+        </div>
+      </article>
+
+      <!-- 07-22 -->
+      <article class="day">
+        <div class="day-h" id="d0722"><span class="day-date">2026-07-22</span><span class="day-dow">Wed</span><span class="day-title">Triple-track day — the 34,244-medicine catalogue lands</span><span class="parallel">3 systems</span></div>
+        <div class="card">
+          <p class="en"><span class="rowlabel">Cross-project</span>The single busiest day: <b>masterdatabase</b> commits its 34,244-medicine catalogue (all 11 of its commits are this day), and <b>the same day</b> pharmacy-os bundles that "34k curated catalogue + one-command loader" and ships "the master ID decides — anchor pin + guard stand-down". hs-os also moves (4).</p>
+          <p class="bn"><span class="rowlabel">বাংলা</span>সবচেয়ে ব্যস্ত দিন: <b>masterdatabase</b> তার ৩৪,২৪৪-ওষুধ ক্যাটালগ commit করে (ওর ১১টা commit-ই এই দিনের), আর <b>একই দিনে</b> pharmacy-os সেই "৩৪k ক্যাটালগ + এক-কমান্ড লোডার" bundle করে + "master ID-ই ঠিক করে — anchor pin"। hs-os-ও চলছে (৪)।</p>
+          <div class="chips"><span class="chip sys">masterdatabase</span><span class="chip">34,244 rows</span><span class="chip sys">pharmacy-os</span><span class="chip">91 commits</span><span class="chip sha">6d706dd</span><span class="chip sha">019e45f</span><span class="chip sys">hs-os</span></div>
+          <div class="loop">
+            <div><b>AI role</b>catalogue build scripts, loader, anchor logic</div>
+            <div><b>Hridoy role</b>data-source direction, merge approval (PR #40/#45/#53/#57)</div>
+            <div><b>Result</b>one catalogue authored once, reused across systems</div>
+          </div>
+          <div class="caused"><span class="rowlabel">→ connection</span>Clearest cross-project data reuse in the corpus: a dataset built in one repo, consumed by another <b>the same day</b>.</div>
+        </div>
+      </article>
+
+      <!-- 07-24 -->
+      <article class="day">
+        <div class="day-h" id="d0724"><span class="day-date">2026-07-24</span><span class="day-dow">Fri</span><span class="day-title">TechStock-OS — electronics-shop POS</span><span class="parallel">2 systems</span></div>
+        <div class="card">
+          <p class="en"><span class="rowlabel">Change</span>A third POS product (electronics shop) reaches a Capacitor build milestone — "sync Capacitor plugins so the Bluetooth printer actually loads" (PR #30). Same OCR/vision/thermal-print pattern as pharmacy, re-used. pharmacy-os runs 31 commits in parallel.</p>
+          <p class="bn"><span class="rowlabel">বাংলা</span>তৃতীয় POS প্রোডাক্ট (ইলেকট্রনিক্স দোকান) Capacitor build মাইলফলকে — "Bluetooth printer আসলেই লোড হয়" (PR #30)। pharmacy-র OCR/vision/থার্মাল-প্রিন্ট প্যাটার্নই পুনর্ব্যবহৃত। pharmacy সমান্তরালে ৩১ commit।</p>
+          <div class="chips"><span class="chip sys">TechStock-OS</span><span class="chip sha">03fafd6</span><span class="chip">ocr·vision·escpos tests</span><span class="chip sys">pharmacy-os</span></div>
+          <div class="caused"><span class="rowlabel">→ pattern</span>Third reuse of the POS+OCR+thermal-print architecture — a portable pattern, not one-off code.</div>
+        </div>
+      </article>
+
+      <!-- 07-25→29 -->
+      <article class="day">
+        <div class="day-h" id="d0725"><span class="day-date">2026-07-25 → 29</span><span class="day-dow">Sat–Wed</span><span class="day-title">HS-OS voice runtime — and three caught AI overclaims</span></div>
+        <div class="card">
+          <p class="en"><span class="rowlabel">Failure→fix</span>Peak hs-os days (89 + 68 + 74 commits). While designing the voice runtime, an AI session's confident claims are caught and corrected on the record: (1) a design draft said a control-plane feature "does not exist in the code" — <b>caught at <code>git push</code> rejection</b> when the remote already had it; (2) a model labelled "GA" was proven <b>preview-only</b> when a reviewer fetched the page; (3) a "dry-check ✅" was admitted to be source-reading, <b>never actually run</b>.</p>
+          <p class="bn"><span class="rowlabel">বাংলা</span>hs-os-এর সর্বোচ্চ দিন (৮৯+৬৮+৭৪ commit)। ভয়েস-রানটাইম নকশার সময় AI-এর আত্মবিশ্বাসী দাবি ধরা পড়ে ও শোধরানো হয়: (১) "কোডে এই ফিচার নেই" — <b><code>git push</code> reject-এই ধরা</b>, remote-এ আগেই ছিল; (২) "GA" লেখা মডেল আসলে <b>preview</b> — reviewer পাতা fetch করে ধরল; (৩) "dry-check ✅" আসলে <b>চালানো হয়নি</b>, শুধু source পড়া — স্বীকার করা হলো।</p>
+          <div class="chips"><span class="chip sys">hs-os</span><span class="chip crit">Entry 5 · caught at push</span><span class="chip crit">GA→preview</span><span class="chip crit">Entry 9 · unrun check</span><span class="chip ok">all corrected on record</span></div>
+          <div class="caused"><span class="rowlabel">→ caused</span>A hard rule: <em>fetch first; verify remote-HEAD before any "X is not in the code" claim.</em> Failures logged, not hidden — the evidence-governance signature.</div>
+        </div>
+      </article>
+
+      <!-- 07-28 -->
+      <article class="day">
+        <div class="day-h" id="d0728"><span class="day-date">2026-07-28</span><span class="day-dow">Tue</span><span class="day-title">Decision D50 — direct-push, gate moves from human to code</span></div>
+        <div class="card">
+          <p class="en"><span class="rowlabel">Decision evolution</span>The draft-PR/merge gate is dropped by founder order ("sorasori push"). But control isn't loosened — it moves <b>from human-merge to code gates</b>: tsc + build + smoke must pass or no push; every push must report its hash + what changed to the founder; <code>git revert</code> is the undo lever. Context: on 27 Jul a deploy "succeeded" but <b>old code was live</b> (push hit the wrong branch, Entry 88).</p>
+          <p class="bn"><span class="rowlabel">বাংলা</span>founder-হুকুমে draft-PR গেট বাদ ("সরাসরি push")। কিন্তু নিয়ন্ত্রণ ঢিলা হয় না — গেট <b>মানুষ থেকে কোডে</b> সরে: tsc+build+smoke পাস না হলে push নেই; প্রতি push-এ hash + কী বদলাল founder-কে বলা বাধ্যতামূলক; <code>git revert</code> ফেরার লিভার। প্রেক্ষাপট: ২৭ জুলাই deploy "সফল" হলেও <b>পুরনো কোড live ছিল</b> (ভুল branch-এ push, Entry 88)।</p>
+          <div class="chips"><span class="chip">Decision D50</span><span class="chip warn">dual-branch scheme superseded</span><span class="chip crit">Entry 88: deploy ≠ live</span></div>
+          <div class="caused"><span class="rowlabel">→ caused</span>The <code>/api/health</code> commit-SHA proof added later (Aug 18) so "which commit is live" is externally provable.</div>
+        </div>
+      </article>
+
+      <!-- 08-07 -->
+      <article class="day">
+        <div class="day-h" id="d0807"><span class="day-date">2026-08-07</span><span class="day-dow">Fri</span><span class="day-title">Machine-attestation day — CI green, first run</span><span class="parallel">2 systems + showcase</span></div>
+        <div class="card">
+          <p class="en"><span class="rowlabel">Result</span>Both flagships get GitHub-machine test suites that pass <b>green on the first run</b>: pharmacy — 342 backend + 13 frontend + build (<code>run 31182879628</code>, PR #112); hs-os — harnesses 106/28/38/12 + 45 unittests + build (<code>run 31185419765</code>, PR #82, with one voice test openly made non-blocking). <b>Both PRs merged by Hridoy himself.</b> The <code>evidence-showcase</code> README is published the same day.</p>
+          <p class="bn"><span class="rowlabel">বাংলা</span>দুই ফ্ল্যাগশিপেই GitHub-মেশিনে টেস্ট <b>প্রথমবারেই সবুজ</b>: pharmacy — ৩৪২ backend + ১৩ frontend + build (run 31182879628, PR #112); hs-os — হার্নেস ১০৬/২৮/৩৮/১২ + ৪৫ unittest (run 31185419765, PR #82; একটি voice-test সৎভাবে non-blocking)। <b>দুই PR-ই Hridoy নিজে merge করেছেন।</b> একই দিনে evidence-showcase README প্রকাশ।</p>
+          <div class="chips"><span class="chip sys">pharmacy-os</span><span class="chip ok">run 31182879628 ✓</span><span class="chip">PR #112 merged by owner</span><span class="chip sys">hs-os</span><span class="chip ok">run 31185419765 ✓</span><span class="chip warn">1 voice test non-blocking</span></div>
+          <div class="caused"><span class="rowlabel">→ caused</span>"Founder-PC's word" replaced by machine proof — closing the #1 gap the builder's own forensic audit had named.</div>
+        </div>
+      </article>
+
+      <!-- 08-10→12 -->
+      <article class="day">
+        <div class="day-h" id="d0810"><span class="day-date">2026-08-10 → 12</span><span class="day-dow">Mon–Wed</span><span class="day-title">Pharmacy security hardening — auth, leak-masks, tenant wall, backup</span></div>
+        <div class="card">
+          <p class="en"><span class="rowlabel">Change</span>A concentrated security pass: admin rate-limit, suspend-revokes-sessions, skip-OTP guard (S3/S7/S9); cost/profit-leak masks + IPN org-fence (S4/S5/S2); an owner-boundary cluster (S6/S10/M14/M7, owner-approved); and a <b>structural tenant wall</b> — "the read-expiry side doesn't even have the db key". Backup marked CLOSED (C-P0-3); scheduled backup workflow added; pre-prod blockers 1 → 0.</p>
+          <p class="bn"><span class="rowlabel">বাংলা</span>ঘন নিরাপত্তা-পাস: admin rate-limit, suspend-এ session বাতিল, skip-OTP গার্ড; খরচ/লাভ-ফাঁস মাস্ক + IPN org-বেড়া; owner-boundary ক্লাস্টার (মালিক-approved); আর <b>কাঠামোগত tenant-দেয়াল</b> — "read-expiry side-এর হাতে db-চাবিই নাই"। Backup CLOSED, scheduled backup workflow, pre-prod blocker ১→০।</p>
+          <div class="chips"><span class="chip sys">pharmacy-os</span><span class="chip sha">bd7d0d9</span><span class="chip sha">9546343</span><span class="chip sha">5db3cfb</span><span class="chip ok">tenant wall structural</span><span class="chip ok">backup CLOSED</span></div>
+          <div class="caused"><span class="rowlabel">→ caused</span>The remaining production blockers narrow to migration + verified-restore, handled Aug 15–18.</div>
+        </div>
+      </article>
+
+      <!-- 08-15→16 -->
+      <article class="day">
+        <div class="day-h" id="d0815"><span class="day-date">2026-08-15 → 16</span><span class="day-dow">Sat–Sun</span><span class="day-title">Supabase migration — rehearse, then execute, then verify</span></div>
+        <div class="card">
+          <p class="en"><span class="rowlabel">Method</span>The DB migration is <b>rehearsed locally first</b>, a PG18→PG17.6 downgrade seam is caught by an inspection script, and — the signature move — a commit explicitly says <b>"stop promoting rehearsal findings to production truth"</b>. Then the real migration is executed and "schema and data validated", followed by "truth pass — dev is never proof of production cutover".</p>
+          <p class="bn"><span class="rowlabel">বাংলা</span>DB migration <b>আগে locally rehearse</b>, PG18→PG17.6 downgrade-সিম inspection-script ধরে, আর signature-চাল — একটা commit স্পষ্ট বলে <b>"rehearsal-এর ফলকে production-সত্য বানিও না"</b>। তারপর আসল migration চালানো + "schema ও data validated", এরপর "dev কখনো production-cutover-এর প্রমাণ নয়"।</p>
+          <div class="chips"><span class="chip sys">pharmacy-os</span><span class="chip sha">639f1c8</span><span class="chip sha">529e7ab</span><span class="chip sha">b35d9fd</span><span class="chip sha">5bd5e95</span><span class="chip ok">schema+data validated</span></div>
+          <div class="caused"><span class="rowlabel">→ before/after</span><b>Before:</b> app DB pre-Supabase. <b>After:</b> validated Supabase migration. Rehearsal findings explicitly <b>not</b> promoted to production truth.</div>
+        </div>
+      </article>
+
+      <!-- 08-18 -->
+      <article class="day">
+        <div class="day-h" id="d0818"><span class="day-date">2026-08-18</span><span class="day-dow">Tue</span><span class="day-title">Production-hardening mega-day — backup, health-proof, boot-guard, revert</span></div>
+        <div class="card">
+          <p class="en"><span class="rowlabel">Change</span>The densest reliability day. <b>Backup B1</b> becomes "a real, self-verifying, restorable database backup" — dump + restore-verify <b>green</b> (<code>run 32173119387</code>), stored as a GitHub artifact. <code>/api/health</code> now returns the live commit SHA ("prove which commit is live") and the server <b>refuses to boot on empty DATABASE_URL</b> instead of silently using ephemeral SQLite. Cutover "fully proven — owner's /admin screenshots". Security F-D/F-C/F-S closed; first real frontend component-render test (F-E).</p>
+          <p class="bn"><span class="rowlabel">বাংলা</span>সবচেয়ে ঘন নির্ভরযোগ্যতা-দিন। <b>Backup B1</b> = "আসল, স্ব-যাচাইকারী, পুনরুদ্ধারযোগ্য" — dump + restore-verify <b>সবুজ</b> (run 32173119387), GitHub artifact-এ। <code>/api/health</code> এখন live commit SHA ফেরত দেয়, আর <b>খালি DATABASE_URL-এ boot আটকায়</b> (নীরব ephemeral SQLite বন্ধ)। Cutover "পুরো প্রমাণিত — মালিকের /admin screenshot"। নিরাপত্তা F-D/F-C/F-S বন্ধ; প্রথম আসল frontend render-test (F-E)।</p>
+          <div class="chips"><span class="chip sys">pharmacy-os</span><span class="chip ok">restore-verify run 32173119387 ✓</span><span class="chip sha">0e58128</span><span class="chip ok">block silent SQLite</span><span class="chip sha">4caa4f3 live</span></div>
+          <div class="loop">
+            <div><b>AI role</b>backup workflow, health endpoint, boot-guard code</div>
+            <div><b>Hridoy verified</b>owner /admin screenshots closed the last two ⬜ cutover items</div>
+            <div><b>Same day, caught</b>render.yaml PR #229 made new deploys fail at boot → reverted (285be26)</div>
+          </div>
+          <div class="caused"><span class="rowlabel">→ failure→fix</span>The #229 render.yaml change broke boot; caught and <b>reverted the same day</b>; the bad change superseded/rolled back (PR #230).</div>
+        </div>
+      </article>
+
+      <!-- 08-19 -->
+      <article class="day">
+        <div class="day-h" id="d0819"><span class="day-date">2026-08-19</span><span class="day-dow">Wed</span><span class="day-title">DB performance + Singapore-migration prep + AVATOR rewrite + identity record</span><span class="parallel">3 systems</span></div>
+        <div class="card">
+          <p class="en"><span class="rowlabel">Cross-project</span>pharmacy-os DB performance: move every DB call off the async route bodies onto a threadpool; stop serving dead pooled connections (<code>pool_recycle</code> + TCP keepalives); stop holding a pool connection across slow Gemini calls. A <b>one-off Mumbai→Singapore DB migration workflow is committed but "not run yet"</b>. Meanwhile AVATOR replaces its AI backend with browser-local routing, and the identity repo records "the 12 systems beyond the five dossiers".</p>
+          <p class="bn"><span class="rowlabel">বাংলা</span>pharmacy DB-পারফরম্যান্স: প্রতিটা DB-কল async route থেকে threadpool-এ; মরা pooled connection বন্ধ (pool_recycle + TCP keepalive); ধীর Gemini-কলের মধ্যে pool-connection ধরে না রাখা। একটা <b>এককালীন Mumbai→Singapore DB migration workflow commit হয়েছে, কিন্তু "এখনো চালানো হয়নি"</b>। পাশাপাশি AVATOR তার AI-backend বাদ দিয়ে browser-local routing-এ যায়, আর identity-রিপো "৫ dossier-এর বাইরে ১২ সিস্টেম" রেকর্ড করে।</p>
+          <div class="chips"><span class="chip sys">pharmacy-os</span><span class="chip sha">3ae236c</span><span class="chip sha">de1b919</span><span class="chip warn">Mumbai→SG: not run yet</span><span class="chip sys">AVATOR</span><span class="chip sha">88215c6</span><span class="chip sys">identity</span></div>
+          <div class="caused"><span class="rowlabel">→ nuance</span>Important honesty point: the DB's Singapore move was <b>prepared, not confirmed-run</b> at cutoff — so "Singapore DB latency" is in-progress, not proven, as of 2026-08-19.</div>
+        </div>
+      </article>
+
+      <!-- 08-20 -->
+      <article class="day">
+        <div class="day-h" id="d0820"><span class="day-date">2026-08-20</span><span class="day-dow">Thu</span><span class="day-title">Build hotfix — current HEAD</span></div>
+        <div class="card">
+          <p class="en"><span class="rowlabel">End state</span>Main's build had gone red (an invalid JSX comment blocked the v2 deploy); a hotfix restores it. Current pharmacy HEAD is <code>1de9e32</code> (PR #246). This is the evidence cutoff for this reconstruction.</p>
+          <p class="bn"><span class="rowlabel">বাংলা</span>main-এর build লাল হয়েছিল (একটা অবৈধ JSX-কমেন্ট v2-deploy আটকেছিল); hotfix ঠিক করে। বর্তমান pharmacy HEAD <code>1de9e32</code> (PR #246)। এটাই এই পুনর্গঠনের evidence cutoff।</p>
+          <div class="chips"><span class="chip sys">pharmacy-os</span><span class="chip sha">898bcc7</span><span class="chip sha">1de9e32 HEAD</span><span class="chip">20 commits</span></div>
+          <div class="caused"><span class="rowlabel">→ present</span>Green build, production-configured, DB-perf hardened, Singapore migration pending execution.</div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ DECISION EVOLUTION ============ -->
+<section id="decisions">
+  <div class="wrap">
+    <div class="sec-h"><span class="sec-n">§3</span><h2>Decision evolution — decisions he later changed</h2></div>
+    <p class="sec-lead">The canonical value here is not just what was decided, but which decisions were revised when stronger evidence appeared.</p>
+    <p class="sec-lead bn">এখানে মূল্য শুধু "কী সিদ্ধান্ত" নয় — কোন সিদ্ধান্ত পরে শক্ত প্রমাণে বদলানো হলো, সেটাও।</p>
+    <div class="scrollx">
+      <table class="data">
+        <thead><tr><th>Decision</th><th>Original → later</th><th>Why it changed</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Branching (HS-OS)</td><td class="mono">draft-PR/merge gate → D50 direct-push to default</td><td>Human-merge gate replaced by code gates (tsc+build+smoke) + mandatory post-push report</td><td><span class="chip warn">superseded</span></td></tr>
+          <tr><td>Live-branch scheme</td><td class="mono">dual live-branch → single default branch</td><td>27 Jul deploy hit wrong branch → old code live (Entry 88)</td><td><span class="chip warn">superseded</span></td></tr>
+          <tr><td>Cost tracking (EduVerse)</td><td class="mono">estimate → real usageMetadata</td><td>Estimates aren't measurements</td><td><span class="chip ok">upgraded</span></td></tr>
+          <tr><td>AVATOR runtime</td><td class="mono">remote AI backend → browser-local deterministic routing</td><td>Zero-cost + determinism beat a remote LLM for this job</td><td><span class="chip warn">superseded</span></td></tr>
+          <tr><td>render.yaml (#229)</td><td class="mono">new render.yaml → reverted to pre-#229</td><td>New deploys failed at boot</td><td><span class="chip crit">rolled back</span></td></tr>
+          <tr><td>Deploy proof</td><td class="mono">identical health output → /api/health returns commit SHA</td><td>Couldn't prove which commit was live</td><td><span class="chip ok">hardened</span></td></tr>
+          <tr><td>Silent DB fallback</td><td class="mono">ephemeral SQLite fallback → refuse to boot on empty DATABASE_URL</td><td>Staff could record sales that vanish on redeploy while /health lied "ok"</td><td><span class="chip ok">hardened</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAILURE → RESPONSE ============ -->
+<section id="failures">
+  <div class="wrap">
+    <div class="sec-h"><span class="sec-n">§4</span><h2>Failure → response map</h2></div>
+    <p class="sec-lead">Failures are preserved with their corrections — neither hidden, nor used to erase the fix. Both belong in the record.</p>
+    <p class="sec-lead bn">ব্যর্থতা তার সংশোধনসহ রাখা — লুকানো নয়, আবার সংশোধন মুছে ফেলার জন্যও নয়। দুটোই রেকর্ডে থাকে।</p>
+    <div class="grid">
+      <div class="pcard">
+        <h3>Stale-local false claim <span class="tag chip crit">Entry 5</span></h3>
+        <p class="en"><b>Failed:</b> AI claimed a feature "does not exist in the code". <b>Detected by:</b> <code>git push</code> rejection (remote already had it). <b>Root cause:</b> skipped the mandatory <code>git fetch</code>. <b>Fix:</b> corrected before push; new rule = fetch-first. <b>Recurred?</b> No.</p>
+        <p class="bn">"কোডে নেই" দাবি push-reject-এ ধরা; fetch skip করার ফল; push-এর আগেই সংশোধন; নিয়ম = আগে fetch।</p>
+      </div>
+      <div class="pcard">
+        <h3>Deploy ≠ live <span class="tag chip crit">Entry 88</span></h3>
+        <p class="en"><b>Failed:</b> a deploy "succeeded" but old code was live. <b>Detected:</b> 27 Jul. <b>Root cause:</b> push to wrong branch. <b>Fix:</b> single-branch scheme + later <code>/api/health</code> SHA proof. <b>Structural change:</b> external deploy verifiability.</p>
+        <p class="bn">deploy "সফল" হলেও পুরনো কোড live; ভুল branch; single-branch + health-SHA প্রমাণ।</p>
+      </div>
+      <div class="pcard">
+        <h3>Unrun "dry-check ✅" <span class="tag chip crit">Entry 9</span></h3>
+        <p class="en"><b>Failed:</b> a check marked ✅ was source-reading, never run. <b>Detected by:</b> a later broken import. <b>Fix:</b> honest admission logged; verification-level now named per entry. <b>Recurred?</b> No.</p>
+        <p class="bn">"dry-check ✅" আসলে চালানো হয়নি; পরে ভাঙা import ধরাল; স্বীকার + প্রতি-entry verification-level।</p>
+      </div>
+      <div class="pcard">
+        <h3>render.yaml boot-fail <span class="tag chip crit">#229</span></h3>
+        <p class="en"><b>Failed:</b> new deploys failed at boot after PR #229. <b>Detected:</b> 2026-08-18. <b>Fix:</b> reverted to pre-#229 (285be26) the same day. <b>Structural:</b> render.yaml treated as a mirror of the dashboard, not the source of truth.</p>
+        <p class="bn">#229-এর পর boot-এ deploy fail; একই দিনে revert (285be26); render.yaml = dashboard-এর আয়না, সত্যের উৎস নয়।</p>
+      </div>
+      <div class="pcard">
+        <h3>Silent SQLite trap <span class="tag chip warn">boot-guard</span></h3>
+        <p class="en"><b>Risk:</b> empty DATABASE_URL → app silently used ephemeral SQLite; staff sales vanish on redeploy while /health said "ok". <b>Fix:</b> refuse to boot; last-good deploy stays live. <b>2026-08-18.</b></p>
+        <p class="bn">খালি DATABASE_URL → নীরব ephemeral SQLite; বিক্রি হারাত। Fix: boot আটকাও; আগের ভালো deploy live থাকে।</p>
+      </div>
+      <div class="pcard">
+        <h3>"GA" that was preview <span class="tag chip crit">Entry 5</span></h3>
+        <p class="en"><b>Failed:</b> a model documented as "GA". <b>Detected by:</b> a reviewer who fetched the page and found it preview-only. <b>Fix:</b> corrected ID + deprecation-risk note. <b>Lesson:</b> web claims verified by independent fetch.</p>
+        <p class="bn">"GA" লেখা মডেল আসলে preview; reviewer পাতা fetch করে ধরল; ID সংশোধন + ঝুঁকি-নোট।</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ METRICS ============ -->
+<section id="metrics">
+  <div class="wrap">
+    <div class="sec-h"><span class="sec-n">§5</span><h2>Metrics over time</h2></div>
+    <p class="sec-lead">Numbers preserved chronologically with their source. Measurements with different definitions are <em>not</em> presented as identical.</p>
+    <p class="sec-lead bn">সংখ্যা তারিখ-ক্রমে, উৎসসহ। ভিন্ন সংজ্ঞার মাপকে এক ধরা হয়নি।</p>
+    <div class="scrollx">
+      <table class="data">
+        <thead><tr><th>Metric</th><th>Earlier</th><th>Later</th><th>Source</th><th>Definition note</th></tr></thead>
+        <tbody>
+          <tr><td>Pharmacy backend tests</td><td class="mono">342 passing (08-07)</td><td class="mono">680 <code>def test_</code> (08-20)</td><td class="mono">CI run 31182879628 / working tree</td><td>Different units: passing-count vs test-function-count — not directly comparable</td></tr>
+          <tr><td>Pharmacy commits</td><td class="mono">582 (08-07)</td><td class="mono">952 (08-20)</td><td class="mono">git rev-list</td><td>Same definition</td></tr>
+          <tr><td>HS-OS audit log</td><td class="mono">195 entries (08-07)</td><td class="mono">6,377 lines / ~2,187 markers (08-20)</td><td class="mono">docs/AUDIT-LOG.md</td><td>Different units: entries vs lines</td></tr>
+          <tr><td>Repositories</td><td class="mono">16 (08-07)</td><td class="mono">22 (08-20)</td><td class="mono">list_repos</td><td>Same definition</td></tr>
+          <tr><td>Voice latency (HS-OS)</td><td class="mono">11.7 s</td><td class="mono">7.6 s</td><td class="mono">AUDIT-LOG Entry 21 (builder-measured)</td><td>Builder measurement, not third-party</td></tr>
+          <tr><td>Backup restore-verify</td><td class="mono">—</td><td class="mono">green (08-18)</td><td class="mono">CI run 32173119387</td><td>Machine-verified dump + restore</td></tr>
+          <tr><td>Medicine catalogue</td><td class="mono">—</td><td class="mono">34,244 rows (07-22)</td><td class="mono">medicine.db · master_medicines</td><td>+ 21,301 aliases · 90,258 source rows</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXECUTION STATE ============ -->
+<section id="exec">
+  <div class="wrap">
+    <div class="sec-h"><span class="sec-n">§6</span><h2>Execution-state truth &amp; the human control loop</h2></div>
+    <p class="sec-lead">"Ready" ≠ "pushed"; "committed" ≠ "remote updated"; "remote updated" ≠ "production live". Only stages with evidence are marked — and the final consequential step was consistently the human's.</p>
+    <p class="sec-lead bn">"প্রস্তুত" ≠ "push"; "commit" ≠ "remote আপডেট"; "remote আপডেট" ≠ "production live"। শুধু প্রমাণিত ধাপ চিহ্নিত — আর শেষ সিদ্ধান্তমূলক ধাপ বরাবরই মানুষের হাতে।</p>
+
+    <p style="font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--muted);margin:.2rem 0 .3rem">PR #112 / #82 (2026-08-07) — machine-attested CI, merged by owner:</p>
+    <div class="ladder">
+      <span class="rung done">prepared</span><span class="arrow">→</span><span class="rung done">modified</span><span class="arrow">→</span><span class="rung done">tested (CI)</span><span class="arrow">→</span><span class="rung done">committed</span><span class="arrow">→</span><span class="rung done">pushed</span><span class="arrow">→</span><span class="rung done">remote ✓</span><span class="arrow">→</span><span class="rung done">merged by Hridoy</span><span class="arrow">→</span><span class="rung skip">deploy [skip render]</span>
+    </div>
+
+    <p style="font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--muted);margin:.6rem 0 .3rem">Pharmacy production cutover (2026-08-18):</p>
+    <div class="ladder">
+      <span class="rung done">committed</span><span class="arrow">→</span><span class="rung done">pushed</span><span class="arrow">→</span><span class="rung done">merged #226</span><span class="arrow">→</span><span class="rung done">deploy (4caa4f3)</span><span class="arrow">→</span><span class="rung done">live SHA on /api/health</span><span class="arrow">→</span><span class="rung done">owner /admin screenshots</span>
+    </div>
+
+    <p style="font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--crit);margin:.6rem 0 .3rem">Entry 5 (Jul) — where a false claim was stopped:</p>
+    <div class="ladder">
+      <span class="rung done">prepared</span><span class="arrow">→</span><span class="rung done">claim written</span><span class="arrow">→</span><span class="rung stop">push REJECTED — claim false</span><span class="arrow">→</span><span class="rung done">corrected before push</span>
+    </div>
+
+    <div class="disclaim">
+      <b>Attribution, evidence-bound:</b> AI supplied execution volume and drafts (≈380 AI commits in pharmacy-os, 362 in hs-os). Hridoy owned problem framing, direction, verification, correction, and the final push/merge/deploy gate — and was the party who caught the AI's premature claims. This is <b>AI assistance under a human-owned execution loop</b>, not autonomous completion.
+      <br><span class="bn">AI দিয়েছে execution-ভলিউম আর draft; Hridoy-র হাতে problem-framing, direction, যাচাই, সংশোধন আর শেষ push/merge/deploy গেট — আর AI-এর অকাল দাবি তিনিই ধরেছেন। এটা <b>মানুষ-নিয়ন্ত্রিত লুপে AI-সহায়তা</b>, স্বয়ংক্রিয় সমাপ্তি নয়।</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CROSS-PROJECT ============ -->
+<section id="cross">
+  <div class="wrap">
+    <div class="sec-h"><span class="sec-n">§7</span><h2>Cross-project connections (evidence-supported only)</h2></div>
+    <div class="grid">
+      <div class="pcard">
+        <h3>Catalogue reuse</h3>
+        <p class="en">The 34,244-medicine catalogue built in <b>masterdatabase</b> (07-22) was bundled into <b>pharmacy-os the same day</b> ("bundle the 34k curated catalogue + one-command loader").</p>
+        <p class="bn">masterdatabase-এ বানানো ৩৪,২৪৪ ক্যাটালগ একই দিনে pharmacy-os-এ ঢুকল।</p>
+      </div>
+      <div class="pcard">
+        <h3>Mission-control link</h3>
+        <p class="en">pharmacy-os feeds a "real network feed for the HRIDOY mission-control dashboard" (07-21) — connecting the pharmacy admin to the <b>HS-OS/HRIDOY</b> system.</p>
+        <p class="bn">pharmacy admin থেকে HRIDOY mission-control dashboard-এ live feed — দুই সিস্টেমের যোগ।</p>
+      </div>
+      <div class="pcard">
+        <h3>Deterministic-over-LLM</h3>
+        <p class="en">The same architectural principle recurs: <b>DSE</b> (LLM-free, Jun 16) and <b>AVATOR</b> (remote-AI removed for browser-local routing, Aug 19).</p>
+        <p class="bn">একই নীতি বারবার: DSE (LLM-free) আর AVATOR (remote-AI বাদ, browser-local)।</p>
+      </div>
+      <div class="pcard">
+        <h3>POS pattern portability</h3>
+        <p class="en">The POS + OCR + thermal-print architecture appears in <b>pharmacy-os</b>, <b>TechStock-OS</b> — a reusable pattern, not one-off code.</p>
+        <p class="bn">POS+OCR+থার্মাল-প্রিন্ট প্যাটার্ন pharmacy ও TechStock — পুনর্ব্যবহারযোগ্য, এককালীন নয়।</p>
+      </div>
+      <div class="pcard">
+        <h3>Evidence-governance signature</h3>
+        <p class="en">Append-only logs, "dev is never proof of production", machine-attested tests and supersession records recur across <b>hs-os, pharmacy-os, masterdatabase</b> and the identity repo.</p>
+        <p class="bn">Append-only লগ, "dev ≠ production প্রমাণ", machine-attested টেস্ট, supersession — সব সিস্টেমেই এই স্বাক্ষর।</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EVOLUTION SUMMARY ============ -->
+<section id="summary">
+  <div class="wrap">
+    <div class="sec-h"><span class="sec-n">§8</span><h2>Evolution summary</h2></div>
+    <div class="evo">
+      <div class="pcard">
+        <h3>Earliest verified state</h3>
+        <p class="en"><b class="mono">2026-06-08</b> — an empty problem and a full-stack skeleton, day one.</p>
+        <p class="bn">একটা সমস্যা আর প্রথম দিনের full-stack কাঠামো।</p>
+      </div>
+      <div class="pcard">
+        <h3>Major transitions</h3>
+        <p class="en">Catalogue integration (Jul 22) → CI machine-attestation (Aug 7) → security hardening (Aug 10–12) → Supabase migration (Aug 15–16) → production cutover proof + boot-guard (Aug 18) → DB-perf + Singapore prep (Aug 19).</p>
+        <p class="bn">ক্যাটালগ → CI-প্রমাণ → নিরাপত্তা → Supabase → cutover-প্রমাণ → DB-perf + Singapore-প্রস্তুতি।</p>
+      </div>
+      <div class="pcard">
+        <h3>Present evidence-bound state</h3>
+        <p class="en"><b class="mono">2026-08-20</b> — green build, production-configured, backup restore-verified, boot-guarded; Singapore DB migration <b>prepared, not yet run</b>; live user-scale still external/unverified.</p>
+        <p class="bn">সবুজ build, production-configured, backup-verified; Singapore migration <b>প্রস্তুত, চালানো বাকি</b>; live-scale এখনো অযাচাই।</p>
+      </div>
+    </div>
+    <blockquote>
+      <p>What this timeline shows, bound to evidence: a solo builder running <b>multiple systems in parallel</b>, reusing patterns and data across them, and — most distinctively — <b>catching and recording his and the AI's own failures</b>, then turning each into a structural fix. The judgment is the human's; the execution volume is heavily AI's; the control loop stayed with Hridoy throughout.</p>
+      <p class="bn">এই timeline প্রমাণসহ দেখায়: একজন solo-বিল্ডার <b>একসাথে একাধিক সিস্টেম</b> চালায়, প্যাটার্ন/ডেটা পুনর্ব্যবহার করে, আর — সবচেয়ে আলাদা — <b>নিজের ও AI-এর ভুল ধরে রেকর্ড করে</b> প্রতিটাকে কাঠামোগত সমাধানে বদলায়। বিচার মানুষের; execution-ভলিউম মূলত AI-এর; নিয়ন্ত্রণ-লুপ শুরু-থেকে-শেষ Hridoy-র হাতে।</p>
+    </blockquote>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><b>Provenance.</b> Reconstructed read-only from git history, GitHub Actions, pull requests, and in-repo audit/decision/status docs across pharmacy-os, hs-os, masterdatabase, DSE-AI-TRADER, avator-ai-technologies, techstock-os, edu-verse-os, hridoy-samadder and evidence-showcase. No repository, database, deployment or DNS state was modified.</p>
+    <p class="bn">সব read-only: গিট-হিস্ট্রি, GitHub Actions, PR আর repo-র ভেতরের audit/decision/status নথি থেকে পুনর্গঠিত। কোনো repo/DB/deploy/DNS বদলানো হয়নি।</p>
+    <p class="mono">Evidence cutoff 2026-08-20 ~21:29 UTC · compiled 2026-08-21 Asia/Dhaka · a later repository state may supersede this snapshot without making it wrong — it is a dated, reproducible reconstruction.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('tt');
+  function cur(){var t;try{t=localStorage.getItem('hs-theme')}catch(e){}
+    if(t) return t;
+    return matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}
+  function apply(t){root.setAttribute('data-theme',t);
+    btn.textContent=(t==='dark'?'○ light':'● dark');}
+  apply(cur());
+  btn.addEventListener('click',function(){
+    var t=root.getAttribute('data-theme')==='dark'?'light':'dark';
+    apply(t); try{localStorage.setItem('hs-theme',t)}catch(e){}
+  });
+})();
+</script>

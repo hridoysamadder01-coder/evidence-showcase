@@ -1,0 +1,190 @@
+<title>Hridoy Samadder — Profile Card</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#e9edf2;--paper:#ffffff;--paper-2:#f4f6f9;--ink:#141820;--ink-soft:#333f4d;
+  --muted:#586372;--faint:#8a94a2;--line:#dce1e9;--line-2:#e9edf2;
+  --accent:#b4530a;--accent-soft:#f4e4d6;--accent-line:#e7c8ad;
+  --ok:#1f8a44;--ok-soft:#e3f2e8;--warn:#8a6100;--warn-soft:#f6edd6;--ai:#3a54b4;--ai-soft:#e5e9f7;
+  --shadow:0 1px 3px rgba(19,23,32,.07),0 18px 50px rgba(19,23,32,.10);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0b0f14;--paper:#141a21;--paper-2:#1a212a;--ink:#e8eef5;--ink-soft:#c2ccd8;
+  --muted:#95a0af;--faint:#69737f;--line:#26303b;--line-2:#212a34;
+  --accent:#f0883e;--accent-soft:#38271a;--accent-line:#48331f;
+  --ok:#48c46a;--ok-soft:#11241a;--warn:#d4a43c;--warn-soft:#292110;--ai:#7f97e8;--ai-soft:#161d31;
+  --shadow:0 1px 3px rgba(0,0,0,.5),0 18px 50px rgba(0,0,0,.4);
+}}
+:root[data-theme="dark"]{
+  --ground:#0b0f14;--paper:#141a21;--paper-2:#1a212a;--ink:#e8eef5;--ink-soft:#c2ccd8;
+  --muted:#95a0af;--faint:#69737f;--line:#26303b;--line-2:#212a34;
+  --accent:#f0883e;--accent-soft:#38271a;--accent-line:#48331f;
+  --ok:#48c46a;--ok-soft:#11241a;--warn:#d4a43c;--warn-soft:#292110;--ai:#7f97e8;--ai-soft:#161d31;
+  --shadow:0 1px 3px rgba(0,0,0,.5),0 18px 50px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--ground);color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;
+  padding:clamp(1rem,4vw,2.5rem)}
+h1,h2,h3{font-family:"IBM Plex Serif",Georgia,serif;line-height:1.15;margin:0;text-wrap:balance}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.tt{position:fixed;top:12px;right:12px;background:var(--paper);color:var(--ink);border:1px solid var(--line);
+  border-radius:999px;padding:.34rem .7rem;font-size:.72rem;cursor:pointer;font-family:"IBM Plex Mono",monospace}
+.tt:hover{border-color:var(--accent)}
+
+.card{max-width:860px;margin:0 auto;background:var(--paper);border:1px solid var(--line);
+  border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.top{padding:clamp(1.5rem,4vw,2.4rem);border-bottom:1px solid var(--line);
+  background:radial-gradient(120% 100% at 100% 0%,var(--paper-2),var(--paper) 65%);position:relative}
+.top::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,var(--accent),transparent 55%)}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin:0 0 .7rem}
+h1{font-size:clamp(2rem,6vw,3rem);font-weight:700;letter-spacing:-.015em}
+.role{font-weight:600;color:var(--accent);font-size:clamp(.98rem,2.4vw,1.15rem);margin:.35rem 0 0}
+.contact{display:flex;flex-wrap:wrap;gap:.45rem;margin:1rem 0 0}
+.contact span{font-family:"IBM Plex Mono",monospace;font-size:.74rem;color:var(--muted);border:1px solid var(--line);
+  border-radius:999px;padding:.22rem .65rem;background:var(--paper)}
+.contact span.live{color:var(--ok);border-color:var(--ok);background:var(--ok-soft)}
+.summary{font-family:"IBM Plex Serif",serif;font-size:clamp(1rem,2.2vw,1.18rem);color:var(--ink-soft);line-height:1.45;margin:1.3rem 0 0;max-width:64ch}
+.summary b{color:var(--ink);font-weight:600}
+
+.body{padding:clamp(1.3rem,3.5vw,2.2rem);display:grid;gap:1.6rem}
+.sec > h2{font-size:.82rem;font-family:"IBM Plex Mono",monospace;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  padding-bottom:.5rem;border-bottom:1px solid var(--line-2);margin-bottom:.9rem}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem}
+@media(max-width:640px){.two{grid-template-columns:1fr}}
+
+.hl{list-style:none;margin:0;padding:0;display:grid;gap:.6rem}
+.hl li{display:grid;grid-template-columns:auto 1fr;gap:.6rem;align-items:start;font-size:.9rem;color:var(--ink-soft)}
+.hl li .k{font-family:"IBM Plex Mono",monospace;font-size:.66rem;color:var(--ok);border:1px solid var(--ok);background:var(--ok-soft);
+  border-radius:5px;padding:.05rem .4rem;white-space:nowrap;margin-top:.15rem}
+.hl li b{color:var(--ink);font-weight:600}
+
+.sys{display:grid;gap:.5rem}
+.sys .row{display:flex;align-items:baseline;gap:.6rem;font-size:.88rem;padding-bottom:.5rem;border-bottom:1px dotted var(--line-2)}
+.sys .row:last-child{border-bottom:none}
+.sys .nm{font-family:"IBM Plex Mono",monospace;font-weight:500;color:var(--ink);white-space:nowrap}
+.sys .ds{color:var(--muted);flex:1}
+.pill{font-family:"IBM Plex Mono",monospace;font-size:.62rem;padding:.08rem .45rem;border-radius:999px;white-space:nowrap}
+.pill.prod{color:var(--ok);background:var(--ok-soft);border:1px solid var(--ok)}
+.pill.beta{color:var(--warn);background:var(--warn-soft);border:1px solid var(--warn)}
+.pill.local{color:var(--muted);border:1px solid var(--line)}
+
+.stat{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line-2);border:1px solid var(--line-2);border-radius:10px;overflow:hidden}
+.stat div{background:var(--paper);padding:.85rem .7rem;text-align:center}
+.stat .v{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:1.15rem;color:var(--accent)}
+.stat .l{font-size:.66rem;color:var(--muted);margin-top:.2rem;line-height:1.3}
+@media(max-width:640px){.stat{grid-template-columns:repeat(2,1fr)}}
+
+.tags{display:flex;flex-wrap:wrap;gap:.35rem}
+.tag{font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--ink-soft);background:var(--paper-2);
+  border:1px solid var(--line);border-radius:6px;padding:.16rem .5rem}
+.note{font-size:.82rem;color:var(--muted);background:var(--paper-2);border:1px dashed var(--line);border-radius:10px;padding:.9rem 1.1rem}
+.note b{color:var(--ink)}
+.foot{padding:1rem clamp(1.3rem,3.5vw,2.2rem);border-top:1px solid var(--line);font-size:.74rem;color:var(--faint);
+  font-family:"IBM Plex Mono",monospace;display:flex;flex-wrap:wrap;gap:.4rem 1rem;justify-content:space-between}
+
+@media print{
+  body{background:#fff;padding:0;font-size:11.5px}
+  .tt{display:none}
+  .card{box-shadow:none;border:none;border-radius:0;max-width:none}
+  .top::before{background:#b4530a}
+  a{color:#111}
+  .stat div,.card,.top{background:#fff}
+}
+</style>
+
+<button class="tt" id="tt" aria-label="Toggle colour theme">◐ theme</button>
+
+<article class="card">
+  <div class="top">
+    <p class="eyebrow">Evidence-bound profile · cutoff 2026-08-20</p>
+    <h1>Hridoy Samadder</h1>
+    <p class="role">Applied-AI Product Engineer · Solo, AI-leveraged Systems Builder</p>
+    <div class="contact">
+      <span class="live">● OushodhOS — production / live</span>
+      <span>Bangladesh</span>
+      <span>hridoysamadder01@gmail.com</span>
+      <span>github.com/hridoysamadder01-coder</span>
+    </div>
+    <p class="summary">Owns problems end-to-end — <b>problem → architecture → build → test → deploy → operate → audit</b> — across <b>22 repositories</b> and multiple substantial systems, and engineers his own evidence and correction discipline into the work itself. AI is used as <b>heavy, openly-visible leverage</b>; the judgment, verification and final execution control are his.</p>
+  </div>
+
+  <div class="body">
+
+    <div class="sec">
+      <h2>Evidence at a glance</h2>
+      <div class="stat">
+        <div><div class="v">22</div><div class="l">repos inspected read-only — all real</div></div>
+        <div><div class="v">386</div><div class="l">merged PRs (of 396), enumerated</div></div>
+        <div><div class="v">2 / 2</div><div class="l">CI suites green, first run</div></div>
+        <div><div class="v">34,244</div><div class="l">medicine catalogue rows</div></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2>Verified highlights — machine- or artifact-backed</h2>
+      <ul class="hl">
+        <li><span class="k">CI</span><span><b>Machine-attested tests green on the first GitHub run</b> — OushodhOS: 342 backend + 13 frontend suites + build; HS-OS: harnesses + 45 unit tests. Not the founder's word — the machine's.</span></li>
+        <li><span class="k">PROD</span><span><b>OushodhOS live in production</b> — multi-tenant pharmacy SaaS; <span class="mono">/api/health</span> returns the live commit SHA; verified DB backup + restore (CI); boot-guard against silent data loss.</span></li>
+        <li><span class="k">DATA</span><span><b>34,244-medicine catalogue</b> + 21,301 aliases + 90,258 row-by-row preserved source rows + a human photo-verification pipeline.</span></li>
+        <li><span class="k">GOV</span><span><b>Evidence-governance in the code</b> — approval-gate, audit-log, self-audit, verification and boot-check as named modules across repos; append-only decision log (D1–D62); a 6,377-line audit log.</span></li>
+        <li><span class="k">JUDG</span><span><b>Deterministic-over-LLM judgment</b> — the stock terminal is deliberately LLM-free; AVATOR replaced its AI backend with browser-local routing for zero cost.</span></li>
+        <li><span class="k">AI</span><span><b>Hand-rolled AI integration</b> — a from-scratch Gemini-Live client (the voice app's only runtime deps are <span class="mono">react + react-dom</span>); local voice-clone on his own GPU at zero cost.</span></li>
+      </ul>
+    </div>
+
+    <div class="two">
+      <div class="sec">
+        <h2>Systems (stage-honest)</h2>
+        <div class="sys">
+          <div class="row"><span class="nm">OushodhOS</span><span class="ds">pharmacy POS/inventory SaaS</span><span class="pill prod">production</span></div>
+          <div class="row"><span class="nm">HS-OS / HRIDOY</span><span class="ds">voice-first AI + governance</span><span class="pill beta">beta</span></div>
+          <div class="row"><span class="nm">oyshe</span><span class="ds">algorithmic trading AI</span><span class="pill local">local</span></div>
+          <div class="row"><span class="nm">snigdha</span><span class="ds">governed voice assistant</span><span class="pill local">local</span></div>
+          <div class="row"><span class="nm">masterdatabase</span><span class="ds">medicine catalogue + verify</span><span class="pill local">data</span></div>
+          <div class="row"><span class="nm">EduVerse AI</span><span class="ds">Bangla tutor, cost-metered</span><span class="pill beta">beta</span></div>
+          <div class="row"><span class="nm">DSE-AI-TRADER</span><span class="ds">LLM-free market terminal</span><span class="pill beta">deployed</span></div>
+          <div class="row"><span class="nm">AVATOR AI</span><span class="ds">deterministic guide + site</span><span class="pill beta">deployed</span></div>
+          <div class="row"><span class="nm">+ 14 more</span><span class="ds">TechStock POS · identity system · MAMA/NIJHUM · React &amp; Android apps</span><span class="pill local">built</span></div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <h2>Stack &amp; capabilities</h2>
+        <div class="tags">
+          <span class="tag">Python · FastAPI</span><span class="tag">TypeScript · React · Vite</span><span class="tag">Capacitor · Android/iOS</span>
+          <span class="tag">Kotlin</span><span class="tag">SQLite · Postgres · Supabase · Neon</span><span class="tag">Gemini · Groq (hand-rolled)</span>
+          <span class="tag">RAG · token/cost metering</span><span class="tag">local voice · Whisper · OmniVoice</span><span class="tag">multi-tenant · RLS thinking</span>
+          <span class="tag">GitHub Actions CI</span><span class="tag">Render deploys</span><span class="tag">ESC-POS / Bluetooth print</span>
+          <span class="tag">backup / restore / boot-guard</span><span class="tag">evidence governance &amp; self-audit</span><span class="tag">AI-behaviour evaluation</span>
+        </div>
+        <p style="margin:1rem 0 0;font-size:.86rem;color:var(--muted)">Solo (single operator — confirmed), with Claude &amp; GPT as execution multipliers. ~10.5-week visible build window, 1,404 commits in the three core repos.</p>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2>Honest boundaries</h2>
+      <p class="note">Not yet established (precondition absent, not disproven): <b>internet-scale load</b>, <b>multi-year longevity</b>, <b>team leadership</b>, <b>independent security certification</b>. <b>"World-class"</b> is a reader's reaction to the work, not a self-claim — there is no population benchmark that makes it a fact. Line-level authorship isn't provable either way; what is evidenced is ownership of the loop.</p>
+    </div>
+
+  </div>
+
+  <div class="foot">
+    <span>Read-only forensic reconciliation · 0 writes · every figure bound to 2026-08-20</span>
+    <span>Full dossier + day-by-day evolution available</span>
+  </div>
+</article>
+
+<script>
+(function(){var r=document.documentElement,b=document.getElementById('tt');
+function c(){var t;try{t=localStorage.getItem('hs-card-theme')}catch(e){}return t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}
+function a(t){r.setAttribute('data-theme',t);b.textContent=(t==='dark'?'○ light':'● dark')}
+a(c());b.addEventListener('click',function(){var t=r.getAttribute('data-theme')==='dark'?'light':'dark';a(t);try{localStorage.setItem('hs-card-theme',t)}catch(e){}});})();
+</script>
