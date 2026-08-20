@@ -1,60 +1,377 @@
-# HRIDOY SAMADDER — Evidence-Mapped Capability Showcase
+# HRIDOY SAMADDER
+# GitHub Forensic Capability & Evidence Audit — CURRENT
 
-**Solo builder · Bangladesh · AI-leveraged (no team, no institutional backing)**
-Contact: hridoysamadder01@gmail.com · GitHub: `hridoysamadder01-coder`
+**Audit date:** 2026-08-21 (Asia/Dhaka) · inspection ran 2026-08-20 evening UTC → 2026-08-21 early Dhaka
+**Auditor:** Claude (Claude Code, remote session) · **Mode:** strictly read-only, zero-write
+**Evidence cutoff:** repository state as observed 2026-08-20 ~21:29 UTC; live GitHub PR/CI state at query time 2026-08-21 (Asia/Dhaka)
+**Supersedes:** `HRIDOYGitHubForensicAudit20260807.md` (prior snapshot, 16 repos) — see §16/§20
 
-> **How to read this document.** Every claim carries a tag: **[FACT]** = verified against artifacts (git history, files, or GitHub-machine CI runs; provenance noted), **[INFERENCE]** = labeled interpretation, **[UNKNOWN]** = honestly untested, **[BUILDER-STATED]** = the builder's own account, with supporting artifacts noted. Compiled from a zero-write forensic audit of all 16 repositories (2026-08-07); the full 21-section audit report, with commit SHAs and file paths for every claim, is available on request. Nothing here was created for show — every referenced test, ledger, and measurement existed in the repositories before this document.
+> 🇧🇩 **এই ফাইলটা কী:** ২০২৬-০৮-০৭-এর মূল forensic audit-এর **current version** — হুবহু একই ২১-সেকশন কাঠামো, প্রতিটা section-এর শুরুতে **"সহজ বাংলায়"** ঘর, তারপর English forensic। এবারের বড় পার্থক্য: আগেরবার প্রায় সব সংখ্যা ছিল তোমার-PC-র দাবি ([S]); এবার আমি নিজে primary-তে যাচাই করেছি — **machine-attested CI, live PR-গণনা, ২২ repo sweep, sqlite-গণনা**। কোনো repo-তে কিছু লেখা/commit/push হয়নি। ভিতরে কোনো গোপন চাবি নাই।
 
 ---
 
-## 1. Headline facts
+## 🇧🇩 নির্বাহী সারাংশ — আগে এইটুকু পড়ো
 
-- **16 repositories, ~1,591 commits, built in ~8.5 weeks** (2026-06-08 → 2026-08-05). **[FACT — git history, all repos]**
-- **All human commits resolve to one person** — three author identities share one email across repos. Solo, verified, not claimed. **[FACT — git author-email analysis]**
-- **AI used as leverage, openly:** ~746 commits authored by AI sessions, ~845 under the builder's own identities; the division is visible in the history, not hidden. **[FACT — git shortlog]**
-- **4 systems actually deployed** (pharmacy SaaS beta, voice-AI mission control + public API, AI tutor, stock-market terminal — all on Render). **[FACT — deploy configs + repo-documented live URLs]**
-- **Machine-attested test suites as of 2026-08-07:** pharmacy SaaS — 342 backend tests + 13 frontend suites + production build, **green on GitHub's machines, first run** (Actions run 31182879628); voice-AI system — 106+28+38+12 harness checks, 45 backend unit tests, typecheck/lint/build, **green first run** (run 31185419765). **[FACT — GitHub Actions, machine-verified]**
-- **Day-to-day operation runs from a mobile phone via tunnel links** — per the builder's own account; the repositories contain artifacts built specifically for that workflow (an auto-learning tunnel-address module, phone-path launcher scripts, phone-side verification notes in the ledgers). Not machine-verified. **[BUILDER-STATED — artifact-supported]**
+**কী করা হইছে:** `hridoysamadder01-coder` অ্যাকাউন্টের **২২টা repository-ই** read-only forensic audit করা হইছে (৮টা গভীর: clone + git-history + code + ৫৪MB sqlite; বাকি API/shallow)। কোথাও এক অক্ষরও লেখা/commit/push হয় নাই। প্রতিটা দাবির গায়ে প্রমাণ-জাত ট্যাগ।
 
-## 2. What was built (main systems)
+**মোট ছবি (current):** ২২ repo, সবগুলোতেই আসল content (একটাও খালি না — আগের "oyshe খালি" এখন ৪০+ মডিউলে ভরা)। তিন core repo-তে **১,৪০৪ commit** (pharmacy ৯৫২ + hs-os ৪৪১ + masterdatabase ১১)। সব মানুষ-পরিচয় **একজনই** (তুমি — builder-confirmed, "Choton" নামটা তোমারই, তিন repo-তে দেখা যায়)। AI-leverage ভারী ও দৃশ্যমান।
 
-| System | What it is | Evidence class |
+**সবচেয়ে বড় পরিবর্তন আগের audit থিকা — #১ গ্যাপ বন্ধ:** আগের audit-এর সবচেয়ে বড় দুর্বলতা ছিল *"কোনো test-CI নাই — সব pass-সংখ্যা PC-র দাবি।"* এবার **মেশিন-প্রমাণিত CI প্রথমবারেই সবুজ** যাচাই করা (Actions run `31182879628` · `31185419765`, PR #112/#82, owner-merged)।
+
+**সবচেয়ে শক্ত যা প্রমাণিত (DEMONSTRATED):** evidence-governance এখন **নাম-ধরে কোড-মডিউল** হিসেবে একাধিক repo-তে (snigdha_approval_gate/audit_log/self_audit/verification; oyshe_self_eval/execution_safety); production-live pharmacy SaaS (health-SHA, verified backup+restore, boot-guard); ৩৪,২৪৪-ওষুধ ডাটা-শাসন; deterministic-over-LLM বিচার; হাতে-লেখা Gemini-Live client; measurement-first debugging।
+
+**সবচেয়ে বড় ফাঁক (সততার খাতিরে):** internet-scale load · multi-year longevity · independent security certification · large-team leadership — কোনোটাই প্রমাণিত না (precondition নাই, অক্ষমতা না)। DB-র Singapore migration **এখনো চালানো হয়নি** (2026-08-19)।
+
+**শেষ রায় এক লাইনে:** এক solo, AI-leveraged সিস্টেম-বিল্ডার যিনি সত্যিই একাধিক substantial full-stack সিস্টেম বানিয়েছেন, টেস্ট করেছেন, deploy করেছেন ও governance দিয়েছেন — যাঁর সবচেয়ে আলাদা, সবচেয়ে-প্রমাণিত বৈশিষ্ট্য নিজের ও নিজের AI-কে সৎ রাখার একটা বারবার-বানানো, কোডে-গাঁথা ব্যবস্থা। build/test/deploy/governance-এ প্রমাণ শক্ত; scale/longevity/external-validation-এ পাতলা — আর repo-গুলা নিজেরাই সেটা আগে স্বীকার করে।
+
+---
+
+## Table of Contents
+1. Audit Scope · 2. Zero-Write Safety Attestation · 3. Evidence Method · 4. Repository Inventory · 5. Cross-Repository Chronology · 6. Project-by-Project Findings · 7. Decision-to-Implementation Chains · 8. Verified Capability Inventory · 9. AI Orchestration & Governance · 10. Model-Audit / Interaction Evidence · 11. Engineering & System Ownership · 12. Product & Business Judgment · 13. Speed / Compression Analysis · 14. Cross-Project System Map · 15. Top Evidence Chains · 16. Contradictions & Supersessions · 17. Evidence Gaps · 18. External-Evaluator Signals · 19. Claims That Would Be Overstated · 20. Final Evidence Verdict · 21. Detailed Evidence Ledger
+
+---
+
+## 1. Audit Scope
+
+> 🇧🇩 **সহজ বাংলায়:** ২২টা repo-ই দেখা হইছে — ৮টা গভীর (clone), বাকিগুলা GitHub-API/shallow। git-history, code, sqlite-ডাটা, CI-run, PR-state — সব read-only পড়া। বাইনারি/ছবির ভিতর আর .env-এর মান দেখা হয় নাই (শুধু path)।
+
+**Inspected:** all 22 repositories under `hridoysamadder01-coder`. Deep (full clone + git history): `pharmacy-os`, `hs-os`, `masterdatabase`; public clones: `dse-ai-trader`, `avator-ai-technologies`, `cholo-jai`, `krishna-kanta`, `techstock-os`-tests, `Reminder-Automation-`, `DARKDDDDTDTUK`, `avijit-vaiya-portfolio`, `pharmacyos-website`; GitHub-API tree/README/commits: `techstock-os`, `edu-verse-os`, `hridoy-samadder`, `mama-os`, `oyshe`, `snigdha`, `maya`, `nijhum`, `hs-ultra-legend-os`, `renewal-ai`. GitHub Actions runs verified for the two CI'd repos; PR state enumerated for all 22 via GitHub search.
+
+**Not inspected, and why:** binary contents beyond metadata (committed images, sqlite blobs beyond row counts); any `.env`-style values (privacy rule — paths only); full verbatim of the 6,377-line HS-OS AUDIT-LOG (headers + ~15% read); GitHub Actions run logs (workflow files + the two run *results* read); full history of the two shallow public clones (HEAD SHA exact, full commit count not retrieved).
+
+**Prior interaction history:** no live conversation archive is accessible; founder↔AI interaction evidence comes from records written into the repositories ([S]) plus uploaded context documents ([T]) and this session itself ([V-live], §10).
+
+---
+
+## 2. Zero-Write Safety Attestation
+
+> 🇧🇩 **সহজ বাংলায়:** হলফনামা — পুরা audit-এ কোনো repo-তে কিছুই লেখা হয় নাই। commit/push/branch/PR/issue/tag/settings/deploy — কিছুই না। শুধু clone/fetch/read/API-read। গোপন চাবি একটাও পড়া হয় নাই। যাচাই: session-শেষে সব repo-র working-tree clean, শূন্য commit।
+
+The audit was conducted zero-write with respect to every repository and every hosted system.
+
+- **Operations used:** file reads; git `clone/fetch(--unshallow)/log/show/rev-list/shortlog/status` (pure reads); GitHub MCP **read** tools only (`search_pull_requests`, `list_pull_requests`, `get_file_contents`, `list_commits`, `actions_get`, `pull_request_read`); `add_repo` with `access:"read"` (attaches read credentials; modifies nothing).
+- **Not performed:** no commit, push, branch/tag/release, PR/issue, workflow trigger/re-run, settings/visibility change, secret access, deploy, migration, install, build, or test execution inside any repository.
+- **Verification [V]:** at session end, `git status --porcelain` is clean on every clone; `git log` shows **zero commits authored this session**; `evidence-showcase` HEAD is still `8ac9fb7` (2026-08-07, pre-existing).
+- **Disclosures (not repository writes):** read-only clones materialized into the ephemeral container; report files written only to the session scratchpad (not into any repo); one background verification workflow spawned read-only subagents and was stopped early.
+
+The safety gate held for the entire audit. **AUDIT NOT BLOCKED.**
+
+---
+
+## 3. Evidence Method
+
+> 🇧🇩 **সহজ বাংলায়:** প্রতিটা দাবির ট্যাগ: **[V]** আমি এই audit-এ নিজে primary যাচাই করেছি · **[G]** git/GitHub metadata · **[M]** মেশিন-মাপা ফল (CI/sqlite/গণনা) · **[A]** committed report/log · **[S]** পুরানা audit/doc-এর record (এবার re-verify করিনি) · **[T]** testimony · **[I]** অনুমান · **[U]** অজানা · **[X]** অমিল · **[SS]** superseded (তারিখসহ)। এবার আগের চেয়ে অনেক দাবি [V]/[M] — কারণ CI/PR/sqlite নিজে যাচাই করা গেছে।
+
+- **[V]** Verified this audit — primary artifact directly inspected (code / git / sqlite / CI / PR state).
+- **[G]** Git/hosted metadata (commit SHAs, author/commit dates, PR states, run results).
+- **[M]** Machine measurement obtained this audit (CI conclusion, sqlite `COUNT(*)`, `def test_` count, PR `total_count`).
+- **[A]** Artifact/document committed in-repo (decision log, audit log, status file, render.yaml).
+- **[S]** Prior-record — from the 2026-08-07 audit or repo docs; contemporaneous but not re-verified this pass.
+- **[T]** Testimony — founder statements / uploaded context. **[I]** inference · **[U]** unknown · **[X]** contradiction · **[SS]** superseded.
+
+Distinction preserved throughout: **[V]/[M]** (machine/primary) outranks **[A]/[S]** (documented) outranks **[T]** (testimony) for capability claims; a lower class never overwrites a higher one.
+
+---
+
+## 4. Repository Inventory
+
+> 🇧🇩 **সহজ বাংলায়:** ২২ repo-র current তালিকা — সবগুলোতেই আসল কাজ। "oyshe খালি" আর নাই (এখন ৪০+ Python মডিউলের trading AI)। merged-PR গণনা enumerate করা (সর্বোচ্চ PR-নম্বর থিকা আন্দাজ করা হয় নাই)। মানুষ-পরিচয় একজনই।
+
+Owner: `hridoysamadder01-coder`. Human author identities resolve to one operator (builder-confirmed); `Choton <choton@oushodhos.com>` is the builder's own alias, present in `pharmacy-os`, `edu-verse-os`, and `snigdha` ([V/G]). `Claude <noreply@anthropic.com>` marks AI-session commits.
+
+| Repo | Vis | Commits | Merged PRs | What it is | Stage |
+|---|---|---|---|---|---|
+| pharmacy-os | priv | **952** [M] | 238 | OushodhOS — pharmacy POS/inventory SaaS; camera recognition; multi-tenant | **PRODUCTION / LIVE** [V] |
+| hs-os | priv | **441** [M] | 81 | HS-OS / HRIDOY — voice-first mission control; local voice-clone | Beta / local [V] |
+| oyshe | priv | (populated) | 0 | Algorithmic trading AI — 40+ Py modules (orderflow/liquidity/MTF/risk/backtest/signal) | Local-run [V] · **[SS] was empty 2026-08-07** |
+| snigdha | priv | (large) | 0 | Local voice assistant — 60+ modules w/ approval-gate, audit-log, self-audit, verification | Local-run [V] |
+| masterdatabase | priv | **11** [M] | 0 | BD medicine master catalogue — 34,244 rows + verification pipeline | Data asset [V] |
+| techstock-os | priv | ~151 [S] | 29 | Electronics-shop POS — OCR/vision/ESC-POS, APK CI | Beta [V] |
+| edu-verse-os | priv | ~113 [S] | 1 | Bangla AI tutor — RAG+MCQ, real usageMetadata cost metering | Beta / deployed [V] |
+| dse-ai-trader | pub | ~12 [S] | 0 | DSE terminal — deliberately **LLM-free** | Deployed [V] |
+| avator-ai-technologies | pub | (Astro) | 4 | AVATOR AI — company site + deterministic guide (browser-local) | Deployed (Pages) [V] |
+| hridoy-samadder | priv | (Next.js) | 23 | Claim-governed public identity system | Staged (noindex) [V] |
+| mama-os | priv | ~79 [S] | 1 | MAMA founder-intelligence OS (voice) + ANJU legal officer | Local / early [V] |
+| nijhum | priv | ~1 [S] | 0 | Founder-intelligence OS — 13 numbered architecture docs + app | Architecture / early [V] |
+| maya | priv | ~17 [S] | 0 | Personal voice assistant (predecessor line) | Local [V] |
+| hs-ultra-legend-os | priv | (monorepo) | 2 | Agentic platform monorepo + local Ollama inference + OVERNIGHT-REPORT | Early / experimental [V] |
+| renewal-ai | priv | (Android) | 7 | Android app (Kotlin) + OVERNIGHT-REPORT — most recently pushed | Recent / beta [V] |
+| cholo-jai | pub | ~3 [S] | 0 | Intercity ride-booking PWA (deterministic sim) — 115 files | Built [V] |
+| krishna-kanta | pub | ~9 [S] | 0 | Founder-identity site w/ verification policy — 83 files | Deployed (Pages) [V] |
+| DARKDDDDTDTUK | pub | (React) | 0 | React/TS app — 64 files | Recent [V] |
+| Reminder-Automation- | pub | (Kotlin) | 0 | Android reminder-automation app — 42 .kt | Recent [V] |
+| avijit-vaiya-portfolio | pub | ~1 [S] | 0 | Third-party portfolio (React) | Deployed [V] |
+| pharmacyos-website | pub | ~45 [S] | 0 | Static marketing site (compiled) | Deployed (Pages) [V] |
+| evidence-showcase | pub | 1 | 0 | AI-authored capability README (derived summary) | — [V] |
+
+**Totals [M]:** 396 pull requests across all 22 (386 merged · 6 closed-unmerged · 4 open); concentrated — pharmacy-os + hs-os = 82.6% of merged PRs; 13 repos use a direct-commit (zero-PR) workflow. Commit counts marked [S] are the 2026-08-07 baseline (not re-enumerated this pass); [M] counts are current-verified.
+
+---
+
+## 5. Cross-Repository Chronology
+
+> 🇧🇩 **সহজ বাংলায়:** সময়ের নকশা, ৮ জুন → ২০ আগস্ট ২০২৬। একই দিনে একাধিক সিস্টেম চলা নিয়ম, ব্যতিক্রম না — ২২ জুলাই একদিনে pharmacy(৯১) + masterdatabase(৩৪,২৪৪ ক্যাটালগ, ১১ commit) + hs-os। ০৭ আগস্ট CI-সবুজ + README। আগস্টের দ্বিতীয়ার্ধ = security → Supabase → production-cutover → DB-perf।
+
+All dates 2026; git author dates (+06:00) corroborated by hosted PR/CI timestamps where available [G].
+
+- **Jun 8** pharmacy-os begins (35 commits day one). **Jun 13–16** DSE-AI-TRADER built + deployed, LLM-free (4 days). **Jun 16** [SS-correction: earlier "Jun 10–22" EduVerse]; **Jun 21** EduVerse switches cost tracking to real Gemini `usageMetadata` (`ec75289`, author Choton) [V/G]. **Jun 22** three repos in one day (SNIGDHA, MAYA, NIJHUM). **Jun 24** pharmacy Oregon→Singapore service migration [S].
+- **Jul 2** pharmacy WORLD_CLASS_AUDIT (`7579e7f`): "not a SaaS yet", tenancy = the blocker [S/G]. **Jul 8** HS-OS begins (35 commits day one). **Jul 15–24** TechStock sprint (30 PRs, APK CI, thermal print). **Jul 22** triple day: masterdatabase 34,244-catalogue (all 11 commits) bundled into pharmacy the **same day** (`6d706dd`); pharmacy peaks 91 commits [V/G]. **Jul 24** pharmacy `TENANT_SCOPING_ENABLED=true` in production; 11/11 isolation matrix [S]. **Jul 25–31** HS-OS burst (328 commits/7d); latency measured 11.7→7.6 s [S/M]. **Jul 28** D50 direct-push adopted; founder voice cloned locally (OmniVoice + Whisper, cost 0) [S].
+- **Aug 3** pharmacy 50 commits; overnight live-test → 8 PRs. **Aug 7** **machine-attested CI green first-run** (pharmacy run `31182879628` PR #112; hs-os run `31185419765` PR #82, both owner-merged) [V/M/G]; evidence-showcase README published (`8ac9fb7`). **Aug 9** render.yaml Oregon→SG "truth-note" correction (C-P3-2) [V/A]. **Aug 10–12** pharmacy security hardening (auth, leak-masks, structural tenant-wall, backup CLOSED) [V/G]. **Aug 15–16** Supabase migration rehearsed → executed → validated ("dev is never proof of production cutover") [V/G]. **Aug 18** production-hardening mega-day — backup restore-verify green (run `32173119387`), `/api/health` commit-SHA, block-silent-SQLite, cutover proven via owner /admin screenshots; render.yaml #229 boot-fail reverted same day [V/G]. **Aug 19** DB-perf (threadpool, pool_recycle+keepalives); **Mumbai→Singapore DB migration committed but "not run yet"** (`c2f3f72`); AVATOR remote-AI→browser-local (`88215c6`); identity repo 12-system record; oyshe now populated (large trading AI). **Aug 20** build hotfix; pharmacy HEAD `1de9e32` (PR #246) [V/G].
+
+At least five days show 3+ repos active simultaneously [V/G].
+
+---
+
+## 6. Project-by-Project Findings
+
+> 🇧🇩 **সহজ বাংলায়:** প্রতিটা প্রজেক্টের current ফলাফল। দুই flagship: **pharmacy-os** (production-live) আর **hs-os** (voice-AI)। এবার নতুন করে যোগ: **oyshe** (বড় trading AI, আগে খালি ছিল) আর **snigdha** (কোডেই governance) — দুটোই বড় ও আসল।
+
+### 6.1 pharmacy-os / OushodhOS — flagship, production
+Full-stack multi-tenant pharmacy SaaS: FastAPI backend, React 19 + Capacitor (Android/iOS) frontend, marketing site. **99 backend test files / 680 `def test_` functions** [M]; 39 frontend test files; pervasive `org_id` tenant isolation across routers [V]. `render.yaml` is an annotated production "truth ledger": live service `oushodhos-sg` (Singapore), Supabase `DATABASE_URL` (`sync:false`), boot-guard, `/api/health` returns live commit SHA [V/A]. **CI run `31182879628` = success, first attempt** (342 backend + 13 frontend + build); PR #112 merged by owner [V/M/G]. Production cutover proven via health-SHA + owner /admin screenshots + verified backup/restore (run `32173119387`) [V/G]. Carried-forward [S]: 3-layer tenancy, name-guard safety, invoice self-heal, RULE#1 git-diff harness. **Boundary:** live user-scale = one pharmacy beta; DB Singapore move prepared, not-yet-run.
+
+### 6.2 hs-os / HS-OS (HRIDOY) — flagship AI, governance-heavy
+Voice-first mission control. Runtime deps = **exactly `{react, react-dom}`** — hand-rolled `GeminiLiveSession.ts`/`GeminiClient.ts`, RAG embed, voice pipeline all hand-written [V]. In-code ledgers: truth/verify/context/done/crash/feature/habit [V]. `DECISIONS.md` = 61 distinct D-tags to D62; `AUDIT-LOG.md` = 6,377 lines [M]. **CI run `31185419765` = success, first attempt** — with one known voice test (`কান-ডাক ২`, E237) made non-blocking *by design* and disclosed in the PR; PR #82 self-corrects a wrong commit SHA [V/M/G]. Carried-forward [S]: local voice-clone under biometric policy, measured latency 11.7→7.6 s, 146-finding self-audit + audit-of-fixes.
+
+### 6.3 oyshe — algorithmic trading AI **[SS: was empty 2026-08-07]**
+Now populated with **40+ Python modules** [V]: orderflow (48KB), liquidity, MTF, risk-manager, backtest (30KB), signal-engine (47KB), Binance-stream (44KB), structure-engine, reasoning-engine, screen-vision, **`oyshe_self_eval.py`**, **`oyshe_execution_safety.py`**, `oyshe_voice_guard.py`; `oyshe_rag.py` (138KB), `oyshe_knowledge_base.json` (282KB); 112KB NEXTGEN roadmap. Local-run (.bat). Corroborates the trading-job testimony (§10/§T). Stage: local/personal-operational, not deployed.
+
+### 6.4 snigdha — governed local voice assistant
+**60+ Python modules** [V] incl. `snigdha_voice_tools.py` (100KB), `snigdha_intent_router.py`, `snigdha_local_brain.py`, and the governance cluster **in code**: `snigdha_approval_gate.py`, `snigdha_audit_log.py`, `snigdha_self_audit.py`, `snigdha_verification.py`, `snigdha_boot_check.py`, `snigdha_token_guard.py`; `SNIGDHA_ARCHITECTURE.md` (82KB). Contains `choton_ai.py` (Choton alias). Local-run.
+
+### 6.5 masterdatabase — data governance
+`medicine.db` (54MB sqlite) [M]: `master_medicines` **34,244** · `medicine_aliases` **21,301** · `import_source_rows` **90,258** · `medicine_data_issues` 1,640 · `medicine_media` 1,273 · `import_runs` 4 · `schema_migrations` 7. Photo-verification pipeline (`verify-results.json`, review screenshots) [V]. Carried-forward [S]: SHA-256 five-field identity, 178 review verdicts incl. a caught 1000× mcg/mg error, "hold 5X" commit decoding exactly against the tree.
+
+### 6.6 mama-os · nijhum — founder-intelligence OS family
+`mama-os`: Python app + STATUS (19KB) + `talk_voice.bat`; the "MAMA" of the Gemini stress-test report; ANJU legal-officer stub [V/S]. `nijhum`: 13 numbered architecture docs (00_executive_summary → 13_future_evolution: agent-org, memory, knowledge-graph, founder-intelligence, security) + app/identity/os/voice dirs [V]. Architecture-heavy, early stage.
+
+### 6.7 edu-verse-os · dse-ai-trader · avator-ai-technologies
+**EduVerse:** RAG + `groq_provider`/`llm.py`; `perf.py` = LRU cache + JSONL logs + Neon-persisted token metrics + Bangla-aware token estimation; HEAD commit = "use real Gemini usageMetadata … instead of estimate" [V/A]. **DSE:** 37 Python files, **zero LLM refs** [V], "cite a measured value" disclaimer. **AVATOR:** Astro static + deterministic `avator-guide/` engine (engine·intent·matcher·normalize + `engine.test.ts`), zero remote-LLM; HEAD = "replace AI backend with browser-local routing" (`88215c6`) [V/G].
+
+### 6.8 hs-ultra-legend-os · renewal-ai · maya · techstock-os · identity · public apps
+`hs-ultra-legend-os`: platform monorepo (apps/engines/services/plugins) + render.yaml + `OVERNIGHT-REPORT.md`; local Ollama inference [V/S]. `renewal-ai`: Kotlin Android + `OVERNIGHT-REPORT.md` (most recent push) [V]. `maya`: personal voice assistant (predecessor line); `speech16k.npy` voice sample [V]. `techstock-os`: OCR/vision/ESC-POS/state test suites; Capacitor; APK CI [V]. `hridoy-samadder`: Next.js identity site + FORENSIC-AUDIT (48KB)/RECOMPOSITION/SYSTEM/WORKLOG governance docs [V]. Public apps `cholo-jai`/`krishna-kanta`/`DARKDDDDTDTUK`/`Reminder-Automation-`/`avijit-vaiya-portfolio` = real React/Kotlin apps; `pharmacyos-website` = static marketing.
+
+---
+
+## 7. Decision-to-Implementation Evidence Chains
+
+> 🇧🇩 **সহজ বাংলায়:** শক্ত শিকল — **সমস্যা → সিদ্ধান্ত → কোডে বদল → যাচাই → সময়।** current audit-এ সবচেয়ে শক্ত নতুন শিকল: "CI নাই" গ্যাপ → ওই দিনই মেশিন-CI সবুজ, owner-merged (ঘণ্টার ব্যাপার)।
+
+1. **"No machine proof" → machine-attested CI (hours).** The 2026-08-07 audit named absent test-CI as gap #1 [S]; the same day, `.github/workflows/tests.yml` shipped, run `31182879628` (342+13+build) and `31185419765` (harnesses+45 unit) went **green first attempt**, PRs #112/#82 merged by owner [V/M/G]. Problem → gap named → structural fix → machine-verified, same day.
+2. **"Not a SaaS" → multi-tenant production.** Jul 2 audit → 3-layer tenancy → `TENANT_SCOPING_ENABLED=true` Jul 24, 11/11 isolation [S/G]. ~3 weeks.
+3. **Cloud quota kills voice → local clone (same day).** Gemini exhaustion → D51 local OmniVoice+Whisper on own GPU, gitignore-first → in-app default in 7 days [S].
+4. **Silent-SQLite trap → boot-guard + health-SHA.** Empty `DATABASE_URL` would let staff record sales that vanish on redeploy while `/health` lied "ok" → server refuses to boot + `/api/health` returns commit SHA (`0e58128`, PR #226, Aug 18) [V/G].
+5. **Migration rehearsal → "dev is never proof of production cutover."** Supabase migration rehearsed locally, downgrade-seam caught, "stop promoting rehearsal findings to production truth" (`529e7ab`), then executed + validated (Aug 15–16) [V/G].
+6. **render.yaml #229 boot-fail → same-day revert.** A config change broke boot; caught and reverted (`285be26`, Aug 18), PR #230 [V/G].
+7. **Founder red-teams a model → structural control.** The Gemini stress-test report's root-cause-not-apology structure became repo policy (budget gate, no-fake-verdicts) [S→A].
+8. **"sure তুমি?" → provenance-tagged history.** One founder question collapsed an AI's confident mis-dating → the 🟢/🔵/🟡 source-tag law [S].
+
+---
+
+## 8. Verified Capability Inventory
+
+> 🇧🇩 **সহজ বাংলায়:** কোন কাজ কতটা প্রমাণিত। **DEMONSTRATED** = একাধিক সরাসরি প্রমাণ · **STRONGLY SUPPORTED** = যথেষ্ট · **SUPPORTED** = আসল-কিন্তু-সীমিত · **NOT ENOUGH** = নম্বর দেওয়া যায় না। এগুলা কাজের-ধরন, চাকরির টাইটেল না।
+
+| Capability | Rating | Strongest evidence (this audit) |
 |---|---|---|
-| **OushodhOS** | Bangla-first pharmacy POS/inventory SaaS: camera medicine recognition (Gemini vision + on-device local-first catalog), invoice OCR with arithmetic-verified self-heal, multi-tenant isolation live in production, Android APK, thermal printing | [FACT — 582 commits, 111 merged PRs, 37-table schema, CI-green suites] |
-| **HS-OS / HRIDOY** | Voice-first "mission control" AI: hand-rolled Gemini Live client (zero AI-SDK dependencies), local voice-clone of the builder's own voice on his own GPU (cost ৳0, offline-capable), speaker-similarity gating, mood-routed TTS, deployed public text API | [FACT — 434 commits; package.json runtime deps = react/react-dom only; voice pipeline repo-documented] |
-| **masterdatabase** | 34,244-medicine Bangladesh master catalog with five-field SHA-256 identity ("never match by brand alone"), human photo-verification pipeline with 178 recorded verdicts — including rejections and a caught 1000× mcg/mg source-data error | [FACT — schema CHECKs + runtime guards + committed review ledgers] |
-| **EduVerse AI** | Bangla AI tutor (RAG + MCQ) with real `usageMetadata` token accounting and a measured-vs-estimated provenance flag on every cost figure | [FACT — code; deployed] |
-| **TechStock-OS** | Electronics-shop POS: on-device ML Kit OCR per sale, Gemini vision once per product (cost discipline), APK built by real CI with a verifiable bot-commit trace | [FACT — 184 tests + CI artifacts in-tree] |
-| **DSE-AI-TRADER** | Dhaka Stock Exchange terminal that is deliberately LLM-free — in-code disclaimer: every generated sentence cites a measured value | [FACT — code] |
+| Evidence-gated AI workflow design & governance | **DEMONSTRATED** | governance as **named code modules** across snigdha/oyshe/hs-os [V]; verifyLedger build-hash binding; machine-attested CI |
+| AI cost/latency engineering | **DEMONSTRATED** | EduVerse real usageMetadata + Bangla-aware estimation [V]; local-first catalog gating; measured $4→$1.1/day [S/M] |
+| Local AI inference on own hardware | **DEMONSTRATED** | OmniVoice/Whisper voice-clone; Ollama in ultra-legend; faster-whisper fallback [S/V] |
+| Real-time voice-system engineering | **DEMONSTRATED** | hand-rolled Gemini-Live clients (hs-os/snigdha/maya); measured latency chain [V/S] |
+| Adversarial self-audit + fix-verification | **DEMONSTRATED** | 146-finding audit + audit-of-fixes [S]; in-code self_audit/verification modules [V] |
+| Data modeling & governance | **DEMONSTRATED** | 34,244 + 90,258 preserved rows [M]; SHA-256 identity; 178 verdicts [S] |
+| Machine-attested testing | **DEMONSTRATED (2 repos)** | CI green first-run, runs 31182879628 / 31185419765 [V/M] — **new vs 2026-08-07** |
+| Backend engineering | **STRONGLY SUPPORTED** | 37-table schema + 3-phase tenancy migrations; boot-check [V/S] |
+| Frontend engineering | **STRONGLY SUPPORTED** | zero-AI-SDK Live client; Capacitor mobile; 680 backend + 39 frontend test files [V/M] |
+| Security remediation | **STRONGLY SUPPORTED** | backdoor red-first fix; alg=none hard-stop; leak-masks; boot-guard [V/S] |
+| Deployment / release engineering | **STRONGLY SUPPORTED** | production cutover proof, verified backup/restore, APK CI, SG service [V] |
+| Deterministic-over-LLM architecture judgment | **DEMONSTRATED** | DSE (0 LLM refs) + AVATOR (remote-AI removed) [V] |
+| AI-behaviour evaluation | **DEMONSTRATED** | Gemini stress-test report (structured failure classes + fixes) [A] |
+| Multi-system integration | **SUPPORTED** | masterdatabase→pharmacy same-day reuse; MAYA live connectors [V/S] |
+| Business/economic tradeoff reasoning | **SUPPORTED** | GPU-vs-server decision with numbers; free-tier discipline [S] |
+| Team / org engineering management | **NOT ENOUGH EVIDENCE** | solo + AI throughout |
 
-## 3. Demonstrated capabilities (each with evidence)
+---
 
-- **Evidence-governed engineering.** Append-only decision log (D1–D71) with founder quotes and supersession chains; 195-entry audit log; a verification ledger that binds human sign-offs to build hashes so verdicts *expire* on new deploys; a measured sycophancy index fed back into the AI's own prompt. **[FACT — files in HS-OS]**
-- **Measurement-first debugging.** End-to-end voice latency decomposed on real devices (11.7s → 7.6s); a wrong suspicion (the STT stage) publicly retracted after measurement; TTS chunking identified as a 2.1× penalty and fixed with the trade-off cost recorded; ASR error baselined against the builder's own 20 hand-transcriptions (CER 28.2% / WER 59.8%), invalidating an earlier flattering number. **[FACT — repo-documented measurements]**
-- **AI cost engineering.** Model-escalation ladders (cheap-first), local-catalog-before-API gating, batch/backoff embedding, real-usage token metering; one system's measured cost cut ~$4/day → ~$1.1/day. **[FACT — code + repo-documented measurements]**
-- **Local AI under privacy constraints.** The builder's voice cloned entirely on his own GPU (OmniVoice zero-shot + Whisper large-v3), with biometric rules enforced *before* enabling direct-push: voice bytes never enter the repo; the phone path refuses to start without auth; "only my own voice is ever cloned." **[FACT — gitignore/commit ordering + auth code + policy in decisions log]**
-- **Adversarial self-audit and correction.** A 19-area, 38-agent read-only audit of his own system produced 146 confirmed findings; 26 were fixed in test-green batches; an adversarial audit *of the fixes* found 4 real gaps, which were fixed; 120 findings deferred with written reasons. **[FACT — committed audit + fix reports, commits b8907dc→36eb96a, d0aef7b]**
-- **Data governance.** Import runs preserved row-by-row with dispositions; cross-source dedup proven by 13,216 already-present hits on re-import; a live-proof document that includes its own three failed searches; image-rights refusals recorded by name. **[FACT — masterdatabase reports]**
-- **Directing AI, not just using it.** 15+ documented cases where the builder caught the AI's errors — fabricated claims, overclaims, wrong architectural direction, stale docs — each with a root-cause confession recorded in the ledger; plus a founder-authored 326-line adversarial red-team report against an LLM whose structure became repo policy. **[FACT — audit-log entries; MAMA-OS reference doc]**
-- **Verification-gated AI orchestration (2026-08-07).** The CI work that produced the machine-attested suites above was itself run under the builder's gates: plan shown first, writes only after approval, and the CI runtime version matched to the documented actual runtime at the builder's insistence; both pull requests were reviewed and merged by the builder. **[FACT — GitHub PR #112 / #82 records; gates visible in the PR bodies]**
+## 9. AI Orchestration and Governance Evidence
 
-## 4. Honest limits — stated plainly
+> 🇧🇩 **সহজ বাংলায়:** "AI লিখছে নাকি হৃদয়" — দুই সরল উত্তরই ভুল। প্রমাণ: problem-framing, শর্ত, যাচাই, দিক-নিয়ন্ত্রণ, শেষ push/merge/deploy গেট — তোমার। AI-কে পাহারা দেওয়ার যন্ত্রগুলা কোডে, মুখে না।
 
-- **No team history.** Structural, not chosen: there was no team to work with. Peer collaboration, receiving code review from humans, shared ownership — **[UNKNOWN]**. The closest existing analog — sustained review/gating of an AI collaborator across ~1,600 commits — is real but is an analog, not the thing itself. **[INFERENCE, labeled as such]**
-- **Production-scale load has not yet been demonstrated.** Current deployment state: one real pharmacy in beta. **[FACT — deployment state; behavior under scale: UNKNOWN]**
-- **Numbers outside the two CI'd repos are self-reported.** Test counts in other repos exist as files and documented runs but are not yet machine-attested. **[FACT — audit finding]**
-- **Line-level authorship is not provable in either direction.** What is evidenced is system ownership: requirements, gates, verification, corrections. **[FACT — for the trail; INFERENCE — for skill attribution]**
-- **Formal credentials, interview-condition fundamentals, English team-communication: [UNKNOWN].** Pre-June-2026 work exists by reference but is not verifiable (one referenced predecessor repo is empty). **[FACT — that it is unverifiable]**
+**Measured split [M/G]:** pharmacy-os 380 AI / 572 human-identity commits (40% AI); hs-os 362 AI / 79 (82% AI); masterdatabase 0 AI / 11. AI is a heavy — sometimes dominant — execution multiplier, **openly visible in history, not hidden**. Author fields describe workflow, not keystrokes; line-level authorship is **[U]**.
 
-## 5. Evidence-supported role fit (assessment, not aspiration)
+**What is attributed to Hridoy [V/S]:** problem definition & acceptance criteria; verification ownership (founder-run live protocols; verdicts bound to build hashes); direction/boundary-setting; model evaluation by the founder himself; and the **final push/merge/deploy gate** — both CI PRs were **merged by the owner** [G]. **Governance as code/artifact [V]:** approval-gate, audit-log, self-audit, verification, boot-check, token-guard (snigdha); self-eval, execution-safety, voice-guard (oyshe); truthLedger/verifyLedger/netPulse/sycophancy-meter (hs-os); never-fabricate recognition guards + honest-empty-state law (pharmacy/DSE); source-provenance tags (pharmacy). **Pattern: hallucination control implemented as system structure, recurring across repos built weeks apart.**
 
-The body of evidence maps most directly onto **applied-AI product engineering, forward-deployed/solutions engineering, voice-AI product work, and founding-/solo-engineer roles**; it does **not** currently support research-scientist or large-scale-infrastructure claims. **[INFERENCE — from the totality above, stated with the same restraint as the underlying audit]**
+---
 
-## 6. How to verify this document
+## 10. Model-Audit / Interaction Evidence
 
-1. Request the **full forensic audit report** (21 sections; every claim carries repo/path/SHA/date).
-2. Request **read access** to any private repository named here — the ledgers and tests are in-tree.
-3. Inspect the **public repositories** directly (visibility re-verified 2026-08-07): `DSE-AI-TRADER`, `cholo-jai`, `krishna-kanta`, `avijit-vaiya-portfolio`, `pharmacyos-website`.
-4. Ask for the **GitHub Actions run links** for the two machine-attested suites (run IDs above).
+> 🇧🇩 **সহজ বাংলায়:** তুমি কবে কবে AI-র ভুল ধরছ — repo-খাতায় লেখা ([S]), current session-এ সরাসরি দেখা ([V-live]), আর Gemini-র উপর তোমার লেখা bug-report ([A])। সেরা current প্রমাণ: এই session-এই তুমি evidence-over-authority চেয়েছ, "solo/one-email" framing শুধরে দিয়েছ, source-weight ও self-audit চেয়েছ।
 
-*Published 2026-08-07 (v2 content, approved by the builder) · changes from v1: five corrections requested by the builder (section rename; mobile-operation claim re-tagged BUILDER-STATED; collaboration line softened to PR-record-backed facts; scale limit re-worded neutrally; public-repo visibility re-verified; "Verification-gated collaboration" renamed to "Verification-gated AI orchestration" at the builder's request). Nothing in this document was created after, or for, the evaluation it describes — except this document itself.*
+Three evidence streams (the requested GPT-5.6 Sol 2026-08-21 transcript was **not supplied** — its turn-by-turn chronology cannot be reconstructed without fabrication):
+
+- **[A] Artifact — Gemini stress-test report** (founder-authored): structured identification of LLM failure classes (over-generation, intent-misalignment, role-boundary drift MAMA↔ANJU, clarification-failure, fluency-over-alignment, weak self-audit) with reproduction steps + product fixes. Behavioral evidence of AI-QA capability, not mere disagreement.
+- **[A/S] Model self-correction on record:** "world-class-caliber" logged as **ChatGPT's calibration error** and retracted; attributed to the model, not to Hridoy.
+- **[V-live] This session (Hridoy × Claude):** required evidence over authority at each turn; corrected the "solo / one-email [FACT]" framing; demanded per-source weighting and a model self-audit; pushed the execution-state truth distinction; confirmed the Choton identity to close a gap.
+- **Observation-before-terminology:** he names these phenomena in informal Bangla; the technical labels (context drift, over-hedging, authority framing) map onto his observations but were not his original words.
+
+Carried-forward founder-catches-AI events [S]: "sure তুমি?" (→ provenance tags); local-brain overclaim reversed by "git check kore dakho"; Rule-11 origin (order executed without checking); PillPack fabrication caught by web-verification; deploy-success illusion (E88).
+
+---
+
+## 11. Engineering & System Ownership Evidence
+
+> 🇧🇩 **সহজ বাংলায়:** production সামলানোর প্রমাণ current-এ আরও শক্ত: verified backup+restore (CI-run), health-SHA দিয়ে "কোন commit live" বাইরে থেকে প্রমাণ, boot-guard, #229 revert। আগের audit-এর "সব CI-বিহীন" গ্যাপ আর নাই — অন্তত দুই repo মেশিন-প্রমাণিত।
+
+- **End-to-end ownership of live systems [V]:** pharmacy-os in production (Render Singapore service, Supabase, APK) with migration, backup/rollback, boot-time hardening, health-check deploy identity.
+- **Operational incident history with root causes [V/S]:** #229 render boot-fail reverted same day; DB-pool starvation; silent stale deploys; Cloudflare rate-limit — each recorded with its fix.
+- **Reliability, verified this pass [V/M]:** backup dump + restore-verify **green** (CI run `32173119387`); block-silent-SQLite boot-guard; `/api/health` commit-SHA.
+- **Frugality as constraint [S]:** free tiers; local GPU vs $250/mo server voice; zero-dependency projects.
+- **Remaining hole [V]:** DB Singapore migration prepared, **not yet run** (2026-08-19); many local systems (oyshe/snigdha/maya) run on his PC, not CI/cloud.
+
+---
+
+## 12. Product & Business-System Judgment Evidence
+
+> 🇧🇩 **সহজ বাংলায়:** ব্যবসা-বুদ্ধি: বাংলা-first, offline-first, কম-শিক্ষিত staff-এর জন্য; লোকাল SMS-gateway; "১ account = ১ pharmacy"; দরকার ফুরাইলে ফিচার বাদ। যা নাই: revenue/retention/বাইরের গ্রাহকের প্রমাণ।
+
+Bangla-first, offline-first, low-literacy-tolerant design tied to stated user reality [S/V]. A real customer ecosystem (Krishna Kanta as investor/shop-owner/dashboard-user) [S]. Scope discipline ("1 account = 1 pharmacy — ever"; Telegram removed when redundant) [S]. Honest marketing posture (pre-launch noindex; "demonstration concept" labels) [V]. **Not evidenced:** revenue, retention, user counts beyond single-beta telemetry, external customers beyond the founder's circle.
+
+---
+
+## 13. Speed and Execution Compression Analysis
+
+> 🇧🇩 **সহজ বাংলায়:** গতির হিসাব: current-এ pharmacy একাই ৯৫২ commit; ৩৮৬ merged PR (দুই flagship = ৮২.৬%); ২২ জুলাই একদিনে ৩৪,২৪৪ ক্যাটালগ; audit-গ্যাপ→CI-সবুজ ঘণ্টায়। ⚠️ সৎ: এই গতি ভারী AI-leverage ছাড়া ব্যাখ্যা হয় না, আর দৃশ্যমান ইতিহাস "v1.3 beta" থিকা — তার আগের সময় অদৃশ্য (testimony-তে ~৯ বছর)।
+
+- Peak throughput [G]: 91 commits/day (pharmacy Jul 22); 328 commits/7d (HS-OS Jul 25–31); 10 PRs merged in ~4.5 h (Aug 3); 386 merged PRs total across 22 repos [M].
+- Milestone durations [V/S]: concept→deployed terminal in 4 days (DSE); catalogue+pipeline in 86 min of commits (masterdatabase); audit-finding→production tenancy in 22 days; quota-outage→own-voice same day; **audit-gap→machine-CI-green in hours** (new).
+- **[I]** cadence is materially compressed vs the single-person norm, inseparable from heavy AI-session leverage plus a low rework rate enabled by the review/gate discipline. No population benchmark exists → no population-level claim made.
+- Counterweight [G/T]: visible history begins Jun 8 at "v1.3 beta"; a ~9-year prior arc exists in testimony only ([T], unverifiable by artifact).
+
+---
+
+## 14. Cross-Project System Map
+
+> 🇧🇩 **সহজ বাংলায়:** প্রজেক্টগুলা কোডে-জোড়া একটা ecosystem — masterdatabase→pharmacy (ঔষধ-ভাণ্ডার); pharmacy admin→HS-OS mission-control; deterministic-over-LLM নীতি DSE↔AVATOR; voice-family maya→snigdha→hs-os→mama-os→nijhum একই capability-র iteration।
+
+```
+masterdatabase (34,244 catalogue) ──import, same day──► pharmacy-os (production SaaS)
+        pharmacy admin feed ──► HS-OS / HRIDOY (mission control; voice)
+        voice-intelligence family:  maya → snigdha → hs-os → mama-os / nijhum  (iterating, one capability)
+        deterministic-over-LLM principle:  DSE-AI-TRADER  ·  AVATOR (remote-AI removed)
+        evidence-governance signature:  pharmacy · hs-os · snigdha · oyshe · masterdatabase · identity
+        standalone:  cholo-jai · krishna-kanta · techstock-os · renewal-ai · DARKDDDDTDTUK
+```
+Claims **not** supported: a shared runtime platform or cross-repo code library. Convergent architecture, mostly zero shared code [V].
+
+---
+
+## 15. Top Evidence Chains
+
+> 🇧🇩 **সহজ বাংলায়:** সবচেয়ে শক্ত প্রমাণ-শিকল — কারো কথা বিশ্বাস না কইরাও commit/run/তারিখ ধইরা মিলানো যায়। বাইরের কাউরে দেখাইলে আগে এইগুলা।
+
+1. **Machine-attested CI [V/M/G]:** Actions run `31182879628` (pharmacy) + `31185419765` (hs-os) = `success`, `run_attempt:1`; PRs #112/#82 `merged_by: hridoysamadder01-coder`, 2026-08-07.
+2. **Production cutover [V/G]:** `/api/health` commit-SHA (`0e58128`, PR #226 `4caa4f3`) + backup restore-verify green (run `32173119387`) + owner /admin screenshots, 2026-08-18.
+3. **Data-governance authenticity [M/G]:** `medicine.db` — `master_medicines` 34,244, `import_source_rows` 90,258 (sqlite-counted); commit `3c6435b` "hold 5X" decodes against the tree.
+4. **Evidence-governance as code [V]:** `snigdha_approval_gate.py` · `snigdha_self_audit.py` · `snigdha_verification.py` · `oyshe_self_eval.py` · `oyshe_execution_safety.py` — named modules, multiple repos, weeks apart.
+5. **PR enumeration [M]:** 386 merged / 396 total across 22 repos (GitHub search `total_count`, not max-number).
+6. **Deterministic-over-LLM [V/G]:** DSE 0 LLM refs; AVATOR HEAD `88215c6` "replace AI backend with browser-local routing".
+7. **Governance under load [V/G]:** render.yaml #229 boot-fail → same-day revert (`285be26`); hs-os CI PR self-corrects a wrong SHA — failures logged, not hidden.
+8. **Supersession integrity [V/G]:** the 2026-08-07 audit's own #1 gap closed hours later and verified here; oyshe empty→populated.
+
+---
+
+## 16. Contradictions & Supersessions
+
+> 🇧🇩 **সহজ বাংলায়:** অমিল লুকানো হয় নাই। ধরন একটাই — পুরানা ডকুমেন্ট বাসি, নতুনটা বেশি সঠিক (জালিয়াতির উল্টা)। আর আগের audit-এর কিছু গ্যাপ current-এ **superseded**।
+
+**Supersessions vs 2026-08-07 [SS]:** (a) "no test CI" → machine-CI green [V]; (b) oyshe empty → populated [V]; (c) 16→22 repos; (d) pharmacy 582→952 commits; (e) render.yaml Oregon-drift → corrected in-repo (2026-08-09) + #229 revert (2026-08-18); (f) "live beta" → production cutover proven.
+
+**Corrections to the README/resume [X→resolved]:** "all human commits resolve to one email [FACT]" → two emails (gmail + oushodhos.com), **one operator** — builder-confirmed [V/T]; "16 repositories/1,591 commits" → superseded; "D1–D71" → 61 distinct to D62.
+
+**Still open (carried from 2026-08-07) [X]:** HS-ULTRA-LEGEND-OS deploy sets `ANTHROPIC_MODEL` but code reads `ENGINE_MODEL` (invalid default) — real config bug, not re-verified this pass; EduVerse corpus-size doc divergence; masterdatabase CI-template non-functional. Pattern: documentation-freshness failures, not fabrication — the newer artifact is consistently more modest/accurate.
+
+---
+
+## 17. Evidence Gaps — What the Evidence Does NOT Prove
+
+> 🇧🇩 **সহজ বাংলায়:** প্রমাণ যা বলে **না** (প্রমাণ-না-থাকা ≠ পারো-না): কে কতটা হাতে লিখছে; internet-scale load; multi-year longevity; স্বাধীন security-cert; revenue/গ্রাহক-scale; DB-র Singapore latency (migration এখনো চলেনি); GPT-5.6 Sol transcript।
+
+Absence ≠ inability:
+1. **Line-level manual coding depth** — unverifiable in either direction; SNIGDHA/oyshe are founder-identity-heavy [I].
+2. **Production scale / adversarial load** — one live pharmacy beta; no multi-customer or hostile-traffic proof.
+3. **Multi-year longevity** — visible window ~10.5 weeks; supports density, not durability.
+4. **Independent security certification** — self-audits only; hardening evidenced, third-party cert not.
+5. **Revenue, retention, external customers, regulated compliance, large-team leadership** — no evidence in scope.
+6. **Singapore DB latency** — the Mumbai→Singapore migration is committed but **not-yet-run** (2026-08-19); the web service is Singapore, the DB move is in-progress.
+7. **GPT-5.6 Sol 2026-08-21 session** — transcript not supplied; its turn-by-turn chronology cannot be reconstructed.
+8. **FOUNDER_JOURNEY_v3.1** — referenced but not delivered to this session.
+
+---
+
+## 18. External-Evaluator / Hiring-Relevant Signals
+
+> 🇧🇩 **সহজ বাংলায়:** বাইরের technical মূল্যায়নকারী সবচেয়ে দ্রুত কী যাচাই করতে পারবে, শক্তির ক্রমে। এবার #১ = মেশিন-CI (আগে ছিল না)।
+
+Fastest to verify, descending strength:
+1. **Machine-attested CI runs** (`31182879628`, `31185419765`) — green first-run, checkable in seconds [V/M] — *the layer that was missing on 2026-08-07*.
+2. **Decision→implementation→verification chains** of §15 — traceable to SHAs/timestamps without trusting narrative.
+3. **Evidence-governance as code** — named modules across ≥6 repos.
+4. **pharmacy-os as a whole** — schema, tenancy migrations, security fixes, cost-gated AI pipeline; a reviewable production codebase.
+5. **Hand-rolled Gemini-Live clients** — protocol-level debugging, not SDK consumption.
+
+Work functions the evidence already supports evaluating for: applied-AI product engineering for low-resource/localized markets; voice-AI systems engineering; AI cost/reliability engineering; data-pipeline/catalog governance; solo-founder full-lifecycle ownership with AI leverage; AI-behaviour evaluation & guardrail design.
+
+---
+
+## 19. Claims That Would Be Overstated
+
+> 🇧🇩 **সহজ বাংলায়:** ⚠️ এগুলা এখনো publicly কইরো না — প্রমাণ ওজন বহন করে না। তোমার নিজের 🟢🔵🟡 নিয়মটাই public-দাবিতেও খাটাও।
+
+Should **not** be publicly claimed yet:
+- "Production SaaS serving many pharmacies" (one live beta; multi-customer not proven).
+- "Security-audited" without qualifiers (self-audited; open items).
+- "Voice fine-tuned model" beyond zero-shot/local clone.
+- "16 / 22 products" as products (honest count of substantive *systems* ~15–18, several local/experimental; a repo ≠ a product).
+- "Singapore low-latency DB" (migration not-yet-run at cutoff).
+- **"World-class"** as self-description — it is **evaluator judgment, not fact** (no population benchmark); let the work make the reader conclude it.
+- "Built in N weeks" without the caveat that visible history starts at v1.3 beta and AI leverage was integral.
+
+---
+
+## 20. Final Evidence Verdict
+
+> 🇧🇩 **সহজ বাংলায়:** শেষ রায় — **সরাসরি প্রমাণিত:** evidence-governance (কোডে), মেশিন-CI, AI cost/latency, local-inference, real-time voice, data-governance, deterministic-বিচার, AI-behaviour evaluation, বহু-সিস্টেমে সমান্তরাল কাজ। **শক্তভাবে সমর্থিত:** backend/frontend/security/deploy/testing। **সীমিত/শুরু:** ecosystem-integration, fine-tune, ব্যবসার-সংখ্যা। **অপরীক্ষিত:** scale, স্বাধীন যাচাই, team।
+
+1. **Directly demonstrated:** evidence-gated AI workflow design (now including machine-attested CI); AI cost/latency engineering with measured results; local AI inference under a privacy/biometric policy; real-time voice-system engineering at protocol level; observability/fault-isolation as code; adversarial self-audit incl. auditing its own fixes; data governance with verifiable integrity; deterministic-over-LLM judgment; AI-behaviour evaluation; sustained parallel execution across 22 systems with per-increment records.
+2. **Strongly supported:** backend/frontend/product engineering; security remediation with regression pinning; deployment/release governance incl. verified backup/restore and production cutover; spec-to-architecture decomposition.
+3. **Emerging / limited:** multi-system ecosystem integration (mostly single-machine); model fine-tuning (planned, unproven); business-economics beyond cost discipline.
+4. **Untested:** production/adversarial scale; independent verification beyond CI; team-context engineering.
+5. **Most compelling to an evaluator:** the §15 chains + the governance-as-code — checkable without trusting this report.
+6. **Still requiring independent verification:** self-reported test counts outside the two CI'd repos; live voice quality; pre-June-2026 history; Singapore DB latency.
+7. **Should not claim yet:** §19.
+
+**Bottom line:** a solo builder operating with heavy, explicitly-managed AI leverage, whose distinguishing *verified* trait is not any single artifact but a **repeatedly-instantiated, code-level system for keeping himself and his AI tools honest** — provenance tags, evidence gates, machine-attested tests, recorded confessions, audits of audits — applied across a **production pharmacy product**, a working local-voice AI, a large trading AI, and ~a dozen satellites, over a ~10.5-week observable window at compressed cadence. Strong on capability breadth, verification discipline, and speed; genuinely thin on independent attestation-at-scale and external validation — and the repos say so themselves before any auditor does. No inflation, no diminishment: the corpus decided.
+
+---
+
+## 21. Detailed Evidence Ledger
+
+> 🇧🇩 **সহজ বাংলায়:** যাচাইকারীর জন্য — commit-SHA, run-ID, PR-নম্বর, sqlite-গণনা এক জায়গায়। গোপন-চাবি ফাইলের শুধু path।
+
+**Machine-verified this audit [V/M/G]:**
+- CI: Actions run `31182879628` (pharmacy-os "Tests", success, attempt 1, 2026-08-07T13:29:36Z→13:30:47Z, head `5f355984…`); run `31185419765` (HS-OS "Tests", success, attempt 1, 2026-08-07T14:00:28Z→14:02:05Z, head `943384e3…`); backup restore-verify run `32173119387` (green, 2026-08-18).
+- PRs: #112 (pharmacy, merged 2026-08-07T13:35:03Z, by owner, base main); #82 (hs-os, merged 2026-08-07T14:04:09Z, by owner, base `claude/mama-s28cu4`). PR totals per §4/§31: 386 merged / 6 closed-unmerged / 4 open / 396 total.
+- HEADs (2026-08-20): pharmacy-os `1de9e32` (PR #246, Hridoy) · hs-os `26b507e` (2026-08-09, Claude) · masterdatabase `3c6435b` (2026-07-22) · dse `eacb9d4` · avator `88215c6` · techstock `03fafd6` · edu-verse `ec75289` (author Choton) · identity `14db2f3`.
+- sqlite `medicine.db`: master_medicines 34,244 · medicine_aliases 21,301 · import_source_rows 90,258 · medicine_data_issues 1,640 · medicine_media 1,273 · import_runs 4 · schema_migrations 7.
+- Deploy/config: `pharmacy-os/render.yaml` (service `oushodhos-sg`, region singapore, `DATABASE_URL sync:false`, last touched `285be26` revert 2026-08-18); Mumbai→Singapore migration `c2f3f72` (2026-08-19, "not run yet").
+- Authorship (git shortlog): pharmacy 380 Claude / 302 Choton / 270 Hridoy-gmail; hs-os 362 Claude / 79 Hridoy; masterdatabase 11 Hridoy.
+- Governance modules (files present): `snigdha_{approval_gate,audit_log,self_audit,verification,boot_check,token_guard}.py`; `oyshe_{self_eval,execution_safety,voice_guard}.py`; `hs-os/docs/{DECISIONS.md(61 D-tags→D62), AUDIT-LOG.md(6,377 lines)}`.
+
+**Carried forward from 2026-08-07 [S] (not re-verified this pass):** oushodhos 3-layer tenancy + nameGuard + invoice self-heal + RULE#1 harness; HS-OS voice-clone/biometric policy + 146-finding audit chain (`b8907dc`→`36eb96a`→`d0aef7b`); masterdatabase 178 verdicts + mcg/mg catch; MAMA-OS Gemini stress-test report + budget gate; TechStock APK CI (`android.yml` + `signing/debug.keystore` + `refs/tags/latest`).
+
+**Uploaded context [T/A] (2026-08-16/21):** HRIDOY_CURRENT_DEEP_CONTEXT, HRIDOY_CAPABILITY_TRUTH_REPORT (independently corroborates this audit's conclusions), important_hs_brain_raw (journey testimony), HS_IDENTITY_FINAL_WORLD_CLASS_REACTION_PASS (closure numbers 671/36), Gemini stress-test report. Not delivered: FOUNDER_JOURNEY_v3.1; GPT-5.6 Sol 2026-08-21 transcript.
+
+**Potential secret-bearing artifacts (paths only; values NOT inspected):** `.env.example` / `.env.production.example` in pharmacy-os, mama-os, edu-verse-os, hs-ultra-legend-os, dse, cholo-jai, krishna-kanta, maya, oyshe, snigdha, renewal-ai; in-repo rotation TODOs self-disclosed. No live credential observed in any tracked source.
+
+---
+
+*End of report. Generated 2026-08-21 by a strictly read-only audit session: nothing was modified, committed, pushed, or published in any repository (verified: zero commits, clean working trees). Produced at the founder's request and delivered as files only. A later repository state may supersede this snapshot without making it wrong — it is a dated, reproducible reconstruction.*
