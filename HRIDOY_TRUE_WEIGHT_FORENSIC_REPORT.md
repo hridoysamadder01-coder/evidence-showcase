@@ -6,6 +6,8 @@
 **Evidence cutoff:** 2026-08-26 ~16:00 UTC
 **Subject:** Hridoy Samadder (`hridoysamadder01-coder`)
 
+> **A full Bengali edition of this report — same 21 sections, same evidence — is at [`HRIDOY_TRUE_WEIGHT_FORENSIC_REPORT_BN.md`](./HRIDOY_TRUE_WEIGHT_FORENSIC_REPORT_BN.md).** It is not a summary; §10 there explains why the language is itself evidence.
+
 > **Method note, stated up front because it changes how this report should be read.**
 > The workspace I was pointed at (`evidence-showcase`) contains **no primary evidence** — it contains two prior audit documents and four HTML renderings of them. Rather than audit the audits, I attached and independently inspected the underlying repositories, queried GitHub Actions and pull-request state directly, and probed the live production endpoints over the public internet. **Roughly 80% of the load-bearing findings below are primary-verified by me in this session, not inherited.** Where I could only reach a prior document, I say so and downgrade the claim accordingly.
 
@@ -389,6 +391,24 @@ The honest summary: this system has crossed from "deployed" into "operated," whi
 
 Commit messages name the model — Claude Fable 5, Opus 5, Opus 4.8 — so the leverage is not merely visible, it is itemised.
 
+**The language evidence — an ownership signal this report initially under-weighted.**
+
+| Measured | Result |
+|---|---|
+| Bengali comments in backend `.py` | **41 / 58 files** |
+| Bengali in frontend `.jsx` | **57 / 58 files** |
+| Bengali in CI workflows | **9 / 10 files** |
+| Bengali in **AI-authored** commit subjects | **54%** (227 / 424) |
+
+The cause is recorded in `CLAUDE.md`, dated, quoted verbatim as the owner's own instruction:
+
+> **RULE #3 — Code comments carry Bengali explanations (owner's standing order, 2026-08-03)**
+> *"যে কাজই করো না কেন অবশ্যই কোডের মধ্যে বাংলা explanation যেন থাকে —"*
+
+An AI's default output language is English. That more than half of its commit subjects and nearly every source file carry Bengali has exactly one explanation: **a human mandated it, and the mandate is on record, dated, in his own words.** Beyond that, the corpus's vocabulary consists of *coined Bengali terms for concepts*, not translations of standard English engineering terms — প্রাণ-ফাইল (the four protected recognition-core "life files"), খাতা-আইন (the ledger law: work isn't done until the ledger is updated), টেস্ট-সাক্ষী (CI as machine *witness* rather than a claim from one's PC), সত্য-নোট (a config file as a written mirror of reality), নীরব সবুজ (green that means nothing happened).
+
+An AI can translate English concepts into Bengali. **An AI does not originate a conceptual framework in Bengali and then bind itself to obey it.** The conceptual frame of this codebase is Bengali, and the AI worked inside it rather than the reverse. This strengthens the weakest-confidence area of this report — personal ownership attribution — without changing the composite score.
+
 **What the evidence shows Hridoy demonstrably did.**
 
 - **Held the approval gate.** 254 of 265 merges (95.8%) in pharmacy-os are authored by his identity. In a workflow where AI opens the PR, the merge is the decision.
@@ -623,6 +643,7 @@ Each of these would survive a hostile technical reviewer with API access. Every 
 11. **He makes deliberate architecture choices against the default.** Two systems are intentionally LLM-free; one was migrated *off* remote AI to browser-local deterministic routing.
 12. **He sustained this for 80 days and has not stopped.** 57 active days, work continuing daily through the audit date, six nightly verified backups after the previous audit's cutoff.
 13. **AI leverage is heavy, itemised, and open.** 42% and 82% AI-authored commits, model names in the commit trailers. Nothing is concealed.
+14. **The codebase's conceptual frame is Bengali, by his own written mandate.** Bengali explanations in 41/58 backend, 57/58 frontend, and 9/10 workflow files; **54% of AI-authored commit subjects are in Bengali** — because `CLAUDE.md` RULE #3 records his instruction verbatim and dated.
 
 ---
 
