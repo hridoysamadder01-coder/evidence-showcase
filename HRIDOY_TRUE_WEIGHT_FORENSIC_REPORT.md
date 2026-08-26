@@ -688,7 +688,19 @@ The honest summary: this system has crossed from "deployed" into "operated," whi
 | AI (`noreply@anthropic.com`) | 1,149 | **48.9%** |
 | Human identities | 1,199 | **51.1%** |
 
-Human-side identities: `hridoysamadder01@gmail.com` (715), `choton@oushodhos.com` (389), `ulae@local` (48), `dev@eduverse.local` (44), `hridoysamadder01-coder@users.noreply.github.com` (3). The first two are builder-confirmed as his own. The two `@local` identities are local-machine git configs appearing in specific repositories — consistent with solo work, **not independently confirmed**.
+Human-side identities — **all five builder-confirmed as his own** (2026-08-26):
+
+| Identity | Commits | Where |
+|---|---|---|
+| `hridoysamadder01@gmail.com` | 715 | across the corpus |
+| `choton@oushodhos.com` | 389 | pharmacy-os, edu-verse-os, snigdha |
+| `ulae@local` — "HS Ultra Legend" | 48 | **only** hs-ultra-legend-os (Jun 10–18) |
+| `dev@eduverse.local` — "EduVerse Dev" | 44 | **only** edu-verse-os (Jun 10–15) |
+| `hridoysamadder01-coder@users.noreply.github.com` | 3 | GitHub web edits |
+
+The two `@local` identities are per-project local git configs — each confined to exactly one repository, each named after that project, both inside the same June window. Builder testimony is the correct evidence class for one's own machine configuration, and the artifact pattern corroborates it independently.
+
+**Therefore: all 2,349 commits across all 25 repositories resolve to one human operator plus AI sessions. Zero other human contributors anywhere in the corpus.** This was previously established only for the two flagships; it now holds for the whole body of work.
 
 **Per flagship:**
 

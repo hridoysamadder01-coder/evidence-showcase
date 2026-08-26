@@ -716,7 +716,19 @@ RULE #1 হার্নেস আসছে **২৪ জুলাই**। তা�
 | AI (`noreply@anthropic.com`) | ১,১৪৯ | **৪৮.৯%** |
 | মানুষ-পরিচয় | ১,১৯৯ | **৫১.১%** |
 
-মানুষ-দিকের পরিচয়: `hridoysamadder01@gmail.com` (৭১৫), `choton@oushodhos.com` (৩৮৯), `ulae@local` (৪৮), `dev@eduverse.local` (৪৪), `hridoysamadder01-coder@users.noreply.github.com` (৩)। প্রথম দুইটা builder-নিশ্চিত তাঁর নিজের। শেষের `@local` দুইটা নির্দিষ্ট repo-তে থাকা স্থানীয়-মেশিনের git-config — একা-কাজের সাথে সঙ্গতিপূর্ণ, **স্বাধীনভাবে নিশ্চিত না**।
+মানুষ-দিকের পরিচয় — **পাঁচটাই builder-নিশ্চিত, তাঁর নিজের** (২০২৬-০৮-২৬):
+
+| পরিচয় | commit | কোথায় |
+|---|---|---|
+| `hridoysamadder01@gmail.com` | ৭১৫ | পুরা কর্পাস জুড়ে |
+| `choton@oushodhos.com` | ৩৮৯ | pharmacy-os, edu-verse-os, snigdha |
+| `ulae@local` — "HS Ultra Legend" | ৪৮ | **শুধু** hs-ultra-legend-os (১০–১৮ জুন) |
+| `dev@eduverse.local` — "EduVerse Dev" | ৪৪ | **শুধু** edu-verse-os (১০–১৫ জুন) |
+| `hridoysamadder01-coder@users.noreply.github.com` | ৩ | GitHub-ওয়েবে করা edit |
+
+শেষ দুইটা per-project লোকাল git-config — **প্রতিটা ঠিক একটা repo-তে বন্দী**, প্রতিটার নাম ওই প্রকল্পের নামেই, আর দুইটাই একই জুন-জানালার ভিতরে। নিজের মেশিনের config কার — এইটার জন্য builder-সাক্ষ্যই সঠিক প্রমাণ-শ্রেণি, আর artifact-এর ছাঁচ স্বাধীনভাবে সেইটা সমর্থন করে।
+
+**অতএব: ২৫ repo-র ২,৩৪৯ commit-ই একজন মানুষ + AI-সেশনে গিয়ে মিলে। পুরা কর্পাসে অন্য কোনো মানুষ-অবদানকারী নাই।** এইটা আগে শুধু দুই flagship-এ প্রতিষ্ঠিত ছিল; এখন পুরা কাজের শরীরে।
 
 **Flagship-ভিত্তিক:**
 
