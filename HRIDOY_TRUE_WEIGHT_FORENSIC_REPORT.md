@@ -33,15 +33,15 @@
 | Category | Count | Meaning |
 |---|---|---|
 | **Calendar span** | **80 days** | 2026-06-08 → 2026-08-26 |
-| **Git-visible active days** | **69** | at least one system received a commit |
-| **Multi-context days** | **20** | two or three systems the same day (29% of visible days) |
-| **Git-silent days** | **11** | **unobserved — not empty** |
+| **Git-visible active days** | **72** | at least one system received a commit |
+| **Multi-context days** | **47** | two or more systems the same day — **65% of visible days**; 8 days ran four systems, one day ran six |
+| **Git-silent days** | **8** | **unobserved — not empty** |
 
 **What git never sees:** sleep · meals · rest · family · thinking · reading · research · testing in a real shop · verifying on a phone · uncommitted debugging · attempts that were discarded · the time a decision takes.
 
-**So every "active days" figure in this report is a floor, not a ceiling.** 69 days is **minimum observable execution**. Actual human work cannot be less than this; it can be more, and almost certainly was.
+**So every "active days" figure in this report is a floor, not a ceiling.** 72 days is **minimum observable execution**. Actual human work cannot be less than this; it can be more, and almost certainly was.
 
-**80 calendar days does not mean 80 × 24 = 1,920 hours of available work time.** A human has to sleep. No hours figure appears in this report, and **no penalty is applied for the 11 silent days — they are evidence of being a person, not a productivity gap.**
+**80 calendar days does not mean 80 × 24 = 1,920 hours of available work time.** A human has to sleep. No hours figure appears in this report, and **no penalty is applied for the 8 silent days — they are evidence of being a person, not a productivity gap.**
 
 ### 0.3 Sustained load — a measurement not made earlier
 
@@ -49,27 +49,29 @@ Arranging git-visible days into unbroken runs:
 
 | Run | Length | Window |
 |---|---|---|
-| 1 | **21 consecutive days** | Jul 16 → Aug 5 |
+| 1 | **22 consecutive days** | Jul 15 → Aug 5 |
 | 2 | **20 consecutive days** | Aug 7 → Aug 26 *(through the audit date, still running)* |
-| 3 | 12 days | Jul 2 → Jul 13 |
-| 4 | 6 days | Jun 21 → Jun 26 |
+| 3 | 12 days | Jun 8 → Jun 19 |
+| 4 | 12 days | Jul 2 → Jul 13 |
+| 5 | 6 days | Jun 21 → Jun 26 |
 
-**Seven runs, mean length 9.9 days.** **41 of the 80 days sit inside just two unbroken runs** — with not a single git-silent day in between.
+**Five runs, mean length 14.4 days.** **42 of the 80 days sit inside just two unbroken runs** — with not a single git-silent day in between.
 
-That is not a statistic so much as a physical fact: **one person, with no team, carried a live system for 21 straight days and then 20 straight days** — a stretch containing a production cutover, a boot incident, and a backup repair that went red four times before it went green.
+That is not a statistic so much as a physical fact: **one person, with no team, carried live systems for 22 straight days and then 20 straight days** — a stretch containing a production cutover, a boot incident, and a backup repair that went red four times before it went green.
 
 ### 0.4 Contexts per day — added, not divided
 
-Twenty days ran multiple systems. **This is not "work spread thinner" — it is one person holding several systems' state at once.** The heaviest:
+**Forty-seven days — 65% of all visible days — ran two or more systems.** Eight of those ran four systems; one ran six. **This is not "work spread thinner" — it is one person holding several systems' state at once.** The heaviest:
 
 | Date | Commits | Contexts | Which |
 |---|---|---|---|
 | **Jul 22** | **106** | **3** | pharmacy-os + hs-os + the 34,244 catalogue published |
 | **Aug 09** | **88** | **3** | pharmacy-os + hs-os + oyshe published |
+| **Jun 22** | **84** | **4** | edu-verse-os + maya + nijhum + snigdha — three repositories *created* the same day |
+| **Aug 24** | **76** | **6** | pharmacy-os + hs-os + renewal-ai + india-medicine-master-database + offline-voice-engeen + hridoy-factory |
 | Aug 03 | 66 | 2 | pharmacy-os + hs-os |
-| Jul 08 | 43 | 2 | pharmacy-os ongoing + hs-os **started** |
 
-July 22 deserves separate note: 91 commits in pharmacy-os (its own peak), work in hs-os, **and** the 34,244-medicine catalogue finished and merged into pharmacy the same day. **Three distinct domains — POS logic, voice AI, and pharmaceutical data identity — in one day, in one head.**
+July 22 deserves separate note: 91 commits in pharmacy-os (its own peak), work in hs-os, **and** the 34,244-medicine catalogue finished and merged into pharmacy the same day. **Three distinct domains — POS logic, voice AI, and pharmaceutical data identity — in one day, in one head.** And on 2026-08-24 that number reached **six systems in a single day**.
 
 ### 0.5 What this report does **not** penalise
 
@@ -96,7 +98,7 @@ The four penalties that do exist (§17.4) are **purely about evidence and risk**
 >
 > **To:** 2026-08-26 — a multi-tenant SaaS **live** at `api.pharmacyos.ai` that returns its own HEAD commit hash, restores its own backup nightly to verify it, probes its own uptime every half hour, refuses to boot under unsafe configuration, and merges only after 689 test functions and 43 suites pass on GitHub's machines.
 >
-> **In: 80 calendar days — one human, no team.** Alongside it in those same days: a 34,244-medicine catalogue (complete), a hand-written voice AI (deployed), an electronics POS (beta), two local AI assistants, five live sites. **69 days git-visible** (11 git-silent — unobserved, not empty), **20 days holding two or more contexts at once**, and **two unbroken runs of 21 and 20 consecutive days**.
+> **In: 80 calendar days — one human, no team.** **2,349 commits across 25 repositories.** Alongside the flagship: a 34,244-medicine catalogue (complete), a hand-written voice AI (deployed), an electronics POS (beta), an AI tutor, an Android app still being built today, a second medicine database for India, two local AI assistants, five live sites. **72 days git-visible** (8 git-silent — unobserved, not empty), **47 days holding two or more contexts at once — one day holding six**, and **unbroken runs of 22 and 20 consecutive days**.
 >
 > **Shape of the path:** features → structure → **proof**. Step three is the one most solo builders never reach.
 >
@@ -109,11 +111,11 @@ The evidence supports a substantially larger body of real work than the raw repo
 
 Underneath it sits a complete operational envelope. Stated flatly, because every item was verified directly: 689 backend test functions and 43 frontend suites, machine-attested on GitHub's own runners with a documented first-attempt green run; 370 CI runs on the test workflow with the most recent 25 all passing; a nightly database backup workflow that does not merely dump but restores the dump into a throwaway PostgreSQL instance and compares row counts, with an explicit "no fake green" rule making a dump-that-went-nowhere a red build; 286 uptime probes; and a boot guard that refuses to start the production server rather than silently fall back to a file database. Most solo projects — and many funded ones — stop at "it deploys."
 
-**What is not verified and should not be claimed:** scale. The system serves, per the builder's own account, one pharmacy in beta. There is no traffic evidence, no concurrency evidence, no multi-tenant-under-load evidence. There is no human peer review anywhere in ~1,460 commits across the two flagship repositories, no external security assessment, and no evidence bearing on how this capability transfers to an unfamiliar codebase or a team. AI authorship is heavy and openly visible — 42% of pharmacy-os commits and 82% of hs-os commits are authored by `Claude <noreply@anthropic.com>`. Line-level human authorship is not provable in either direction and I make no claim about it.
+**What is not verified and should not be claimed:** scale. The system serves, per the builder's own account, one pharmacy in beta. There is no traffic evidence, no concurrency evidence, no multi-tenant-under-load evidence. There is no human peer review anywhere in **2,349 commits across 25 repositories**, no external security assessment, and no evidence bearing on how this capability transfers to an unfamiliar codebase or a team. AI authorship is heavy and openly visible — 42% of pharmacy-os commits and 82% of hs-os commits are authored by `Claude <noreply@anthropic.com>`. Line-level human authorship is not provable in either direction and I make no claim about it.
 
 **Two corrections to the earlier evidence package** — recorded in full at §3 (class F) and §14, and noted here only so they are not mistaken for findings about his engineering: a cited CI run ID is wrong, and a deployment config names a service that has since been suspended. Neither touches the work above. The backup capability is real and running; the production service is live at a different address.
 
-**The verdict in one paragraph.** The demonstrated weight is that of a builder who reliably closes the loop from an ill-defined real-world problem through architecture, implementation, test, deployment, and into sustained operation with verification — repeatedly, across at least six real systems, across 69 git-visible days of an 80-day span — including unbroken runs of 21 and 20 consecutive days — while personally holding the approval gate on 96% of merges. That is senior-to-staff-level *responsibility breadth* demonstrated in a solo context. It is not equivalent to senior engineering *depth* validated by peers at scale, and no evidence here speaks to that. The most distinctive and best-evidenced trait is not any individual system: it is a repeated, code-level habit of building machinery whose purpose is to prevent himself and his AI from believing things that are not true.
+**The verdict in one paragraph.** The demonstrated weight is that of a builder who reliably closes the loop from an ill-defined real-world problem through architecture, implementation, test, deployment, and into sustained operation with verification — repeatedly, across at least six real systems, across 72 git-visible days of an 80-day span — including unbroken runs of 22 and 20 consecutive days, and 47 days carrying two or more systems at once — while personally holding the approval gate on 96% of merges. That is senior-to-staff-level *responsibility breadth* demonstrated in a solo context. It is not equivalent to senior engineering *depth* validated by peers at scale, and no evidence here speaks to that. The most distinctive and best-evidenced trait is not any individual system: it is a repeated, code-level habit of building machinery whose purpose is to prevent himself and his AI from believing things that are not true.
 
 **On scoring — and why this report no longer carries one.** Earlier drafts closed here with "7.0 / 10." That number is withdrawn, and the reason is methodological rather than diplomatic: **I could not defend the denominator.** This report states plainly that no population benchmark exists for what he has done, and that any percentile claim would be fabricated. A rubric score with anchors I wrote myself does not escape that problem — it disguises it, while absorbing more attention than every verified finding beneath it. The brief that commissioned this audit anticipated exactly this case and authorised refusing a false-precision number. **§17 now gives the multidimensional verdict without one.** Nothing about the findings changed when the number came out; that is the point.
 
@@ -258,12 +260,12 @@ Laying all six systems' git days on one axis:
 **Aggregate:**
 
 - Span **80 calendar days** (Jun 08 → Aug 26)
-- **69 days git-visible** — the other 11 are **git-silent, not empty** (§0.2)
-- **20 days had two or three systems active simultaneously**
+- **72 days git-visible** — the other 8 are **git-silent, not empty** (§0.2)
+- **47 days (65%) had two or more systems active simultaneously**; 8 days had four; one day had six
 - **2 days had three** — Jul 22 (pharmacy 91 commits + hs-os + the 34,244 catalogue) and Aug 09 (pharmacy 84 commits + hs-os + oyshe published)
-- **21 consecutive days (Jul 16→Aug 5) and 20 consecutive days (Aug 7→Aug 26)** — 41 of the 80 days sit inside just two unbroken runs
+- **22 consecutive days (Jul 15→Aug 5) and 20 consecutive days (Aug 7→Aug 26)** — 42 of the 80 days sit inside just two unbroken runs
 
-Counting pharmacy-os alone gives 57 visible days. **Counting all systems gives 69.** The earlier figure was single-repo and understated the load. **In neither version are the remaining days a deficit** — they are outside git's field of view.
+Counting pharmacy-os alone gives 57 visible days. **Counting all 25 repositories gives 72.** The earlier figure was single-repo and understated the load. **In neither version are the remaining days a deficit** — they are outside git's field of view.
 
 ### 1B.7 Complete · paused · published-snapshot · abandoned — kept separate
 
@@ -292,11 +294,11 @@ All 11 of `masterdatabase`'s commits landed within **86 minutes** (Jul 22, 06:59
 
 **What is measurable:**
 
-- **69 of 80 calendar days git-visible** (minimum observable execution, not total human work); **11 git-silent — unobserved, not empty**
-- **20 days** with two or three systems running concurrently
+- **72 of 80 calendar days git-visible** (minimum observable execution, not total human work); **8 git-silent — unobserved, not empty**
+- **47 days (65% of visible days)** with two or more systems running concurrently; 8 with four; one with six
 - Milestone spacing: zero-tests → first test **28 days**; first test → machine-attested CI **32 days**; CI → verified restore **11 days**
 - Densest weeks: W33 (Aug 10–16) **202 commits**, W30 (Jul 20–26) **175**
-- **Unbroken runs:** 21 days · 20 days · 12 days (7 runs, mean 9.9) — 41 of 80 days inside two continuous stretches
+- **Unbroken runs:** 22 · 20 · 12 · 12 days (5 runs, mean 14.4) — 42 of 80 days inside two continuous stretches
 - Correction proportion: **250 of 1,013 (24.7%)** are fix/revert/regression-class
 
 **What is not measurable, and is not being invented:** working hours. Commit timestamps record **when code landed**, not when a person was present. AI assistance means commit volume and human effort are not proportional. **No hours figure appears in this report and none will.**
@@ -576,7 +578,17 @@ Electronics-shop POS. 11 test files totalling ~154 KB including `enrich.test.mjs
 | pharmacyos-website | **Live, 200** | My probe |
 | cholo-jai | **Live, 200** | My probe |
 | avijit-vaiya-portfolio | **Live, 200** (third-party client work) | My probe |
-| MAMA-OS, NIJHUM, MAYA, HS-ULTRA-LEGEND-OS, Renewal-AI, HRIDOY-FACTORY, offline-voice-engeen, India-Medicine-Master-database, DARKDDDDTDTUK, Reminder-Automation-, Hridoy-Samadder | Not inspected this pass | — |
+| **Renewal-AI** | **113 commits in 7 days (Aug 20–26) — still active on the audit date**; Android/Kotlin | commits counted |
+| **hridoy-samadder** | 71 commits in 4 days (Aug 16–19) — claim-governed identity site | commits counted |
+| **hs-ultra-legend-os** | 50 commits (Jun 10–18) — agentic monorepo, local inference | commits counted |
+| **India-Medicine-Master-database** | 33 commits (Aug 22–24) — a **second** medicine catalogue, for India | commits counted |
+| **DARKDDDDTDTUK** | 24 commits (Aug 14–17) — React/TS | commits counted |
+| **HRIDOY-FACTORY** | 23 commits (Aug 24–26) — **still active on the audit date** | commits counted |
+| **offline-voice-engeen** | 23 commits (Aug 23–24) — offline voice engine | commits counted |
+| MAYA | 17 commits (Jun 22–23) | commits counted |
+| Reminder-Automation- | 7 commits (Aug 19) — Kotlin | commits counted |
+| NIJHUM | 1 commit (Jun 22) — architecture docs | commits counted |
+| MAMA-OS | 79 commits (Jul 6–13) — founder-intelligence OS | commits counted |
 
 ---
 
@@ -669,6 +681,17 @@ The honest summary: this system has crossed from "deployed" into "operated," whi
 
 **Measured, not estimated.**
 
+**Across all 25 repositories — 2,349 commits:**
+
+| | Commits | Share |
+|---|---|---|
+| AI (`noreply@anthropic.com`) | 1,149 | **48.9%** |
+| Human identities | 1,199 | **51.1%** |
+
+Human-side identities: `hridoysamadder01@gmail.com` (715), `choton@oushodhos.com` (389), `ulae@local` (48), `dev@eduverse.local` (44), `hridoysamadder01-coder@users.noreply.github.com` (3). The first two are builder-confirmed as his own. The two `@local` identities are local-machine git configs appearing in specific repositories — consistent with solo work, **not independently confirmed**.
+
+**Per flagship:**
+
 | Repository | Total | AI-authored | Human-authored | AI share |
 |---|---|---|---|---|
 | pharmacy-os | 1,013 | 424 | 589 | **41.9%** |
@@ -707,7 +730,7 @@ An AI can translate English concepts into Bengali. **An AI does not originate a 
 
 **What cannot be determined.** Who wrote which line. Whether he could produce the same artifacts without AI assistance. Whether his understanding of, say, the `with_loader_criteria` mechanism is deep or functional. **Interview-condition fundamentals are entirely absent from this corpus and I have no basis for an opinion on them.**
 
-**The honest characterisation.** The evidence supports *system ownership, requirement authorship, verification gating, and final accountability* — demonstrated repeatedly, over ~1,460 commits, with the record of his own rejections and corrections preserved. It does not support "he wrote it," and it equally does not support "the AI built it" — a system that runs unattended nightly restore-verification, refuses to boot unsafely, and instruments its own AI's flattery does not arise from unsupervised generation. Someone decided each of those should exist. The evidence says that someone was him. **In hs-os specifically, where AI authorship is 82% and there is no PR gate and only 9 CI runs across 450 commits, the ownership evidence is materially weaker and should be weighted down.**
+**The honest characterisation.** The evidence supports *system ownership, requirement authorship, verification gating, and final accountability* — demonstrated repeatedly, over **2,349 commits across 25 repositories**, with the record of his own rejections and corrections preserved. It does not support "he wrote it," and it equally does not support "the AI built it" — a system that runs unattended nightly restore-verification, refuses to boot unsafely, and instruments its own AI's flattery does not arise from unsupervised generation. Someone decided each of those should exist. The evidence says that someone was him. **In hs-os specifically, where AI authorship is 82% and there is no PR gate and only 9 CI runs across 450 commits, the ownership evidence is materially weaker and should be weighted down.**
 
 ---
 
@@ -765,7 +788,7 @@ The artifacts show one person carrying functions normally distributed across a t
 **Measured, with no invented hours — and in units of one human (§0).**
 
 - **80-day span**, 2026-06-08 → 2026-08-26, pharmacy-os alone.
-- pharmacy-os alone: **57 git-visible days**. **All systems: 69** of 80 calendar days; **11 git-silent — unobserved, not a deficit** (§0.2). Unbroken runs of **21** and **20** consecutive days.
+- pharmacy-os alone: **57 git-visible days**. **All 25 repositories: 72** of 80 calendar days; **8 git-silent — unobserved, not a deficit** (§0.2). Unbroken runs of **22** and **20** consecutive days.
 - **Peak day: 91 commits** (2026-07-22) — the same day the 34,244-record catalogue was completed and integrated.
 - **Weekly distribution:** 99, 46, 44, 42, 40, 58, 175, 26, 147, 202, 95, 39. Two distinct sustained bursts (W30, W32–W33) rather than a uniform rate.
 - **Multi-system days:** hs-os ran 38/89/68/30/74 commits across 2026-07-25→29 while pharmacy-os remained active — genuine concurrent workstreams, not sequential.
@@ -790,7 +813,7 @@ Ordered by materiality.
 7. **Backup was silently broken for three nights.** Discovered, root-caused, and fixed — but the discipline was built after a failure, not before it.
 8. **Documentation volume substantially exceeds its information content.** `STATUS.md` 604 KB, `TOMORROW.md` 520 KB, `AUDIT-LOG.md` 850 KB, a 112 KB roadmap in a system that has never been deployed. Much is re-narration. This inflates apparent output and imposes a real maintenance cost — evidenced by the fact that a guard had to be built specifically to detect documentation rot, after architecture documents had gone stale for 14+ days unnoticed.
 9. **The `evidence-showcase` presentation layer is disproportionate.** Four HTML renderings of two documents, published as a public repository. This is self-presentation infrastructure, and it should not be counted as engineering.
-10. **Total absence of peer review.** Zero human contributors in ~1,460 commits. Structural rather than chosen, but it means no external correction has ever been applied to any judgment in this corpus.
+10. **Total absence of peer review.** Zero other human contributors across **2,349 commits in 25 repositories**. Structural rather than chosen, but it means no external correction has ever been applied to any judgment in this corpus.
 11. **Concentration risk.** Two repositories carry the overwhelming majority of merged PRs. The account's breadth is much narrower than 25 repositories implies.
 12. **The region migration remains committed but unrun.**
 
@@ -850,7 +873,7 @@ These are not estimates. Each was confirmed by me this session against a primary
 - **He holds the decision gate personally.** 254 of 265 merges under his own identity.
 - **He built machinery that constrains him, and it fired.** Three protected files went from 28, 17, and 10 touches to exactly zero once the guard existed — while the repository's overall commit rate was rising.
 - **He publishes his own failures inside his own proofs.** Three of ten sample searches recorded as failures in the document written to prove the catalogue works.
-- **He carried it as one person.** 69 git-visible days across 80, unbroken runs of 21 and 20 consecutive days, 20 days holding two or more systems at once.
+- **He carried it as one person.** **2,349 commits across 25 repositories**; 72 git-visible days of 80; unbroken runs of **22** and **20** consecutive days; **47 days (65%) holding two or more systems at once**, one day holding six.
 - **He did it in 80 days**, from an application that could prove nothing about itself to one mechanically obliged to.
 
 ### 17.3 Demonstrated with strong support — real, with a named gap
@@ -909,7 +932,7 @@ The report applies deductions to **evidence quality and unresolved risk only**:
 | Product / engineering lead | **Partial on the product half only** | Owns product decisions with a written ledger; no team, no organisational execution |
 | **Founder-builder / technical founder** | **Closest overall fit** | Problem discovery, product definition, architecture, build, deploy, operate, marketing site, subscription and licensing design, third-party client work, and personal final accountability — all present with artifacts |
 
-**Where the comparison breaks down, stated plainly.** Every band above is defined partly by *behaviour toward other people*, and that dimension is entirely absent from this corpus. The closest available analogue — sustained direction, review, gating, and correction of an AI collaborator across ~1,460 commits — is real and is evidenced, but it is not the same thing: an AI does not disagree from experience, does not need convincing, does not carry its own priorities, and cannot be mentored. Any mapping to a conventional band should be read as **"responsibility of a comparable shape and breadth, demonstrated without the interpersonal dimension that normally defines it."**
+**Where the comparison breaks down, stated plainly.** Every band above is defined partly by *behaviour toward other people*, and that dimension is entirely absent from this corpus. The closest available analogue — sustained direction, review, gating, and correction of an AI collaborator across 2,349 commits — is real and is evidenced, but it is not the same thing: an AI does not disagree from experience, does not need convincing, does not carry its own priorities, and cannot be mentored. Any mapping to a conventional band should be read as **"responsibility of a comparable shape and breadth, demonstrated without the interpersonal dimension that normally defines it."**
 
 Conversely, the reverse error should be avoided just as firmly: the absence of a job title, degree, or team does not reduce what the artifacts show. The live production system, the 689 backend test functions, the verified restores, and the 286 uptime probes exist regardless of anyone's credentials.
 
@@ -960,7 +983,7 @@ Each of these would survive a hostile technical reviewer with API access. Every 
 
 **How difficult that body of work really is.** The individual pieces are mostly not algorithmically hard. There is no novel algorithm, no distributed system, no concurrency problem of consequence anywhere in the corpus. The difficulty is of a different kind, and it is the kind that most solo projects fail at: **holding many things correct simultaneously, in production, while continuing to change them.** Tenant isolation had to coexist with globally-unique invoice numbers, and he resolved that collision deliberately — with a documented opt-out and a written statement of the HTTP 500 it would otherwise have caused — rather than discovering it in production. A backup had to be a backup, not a JSON dump missing the `organizations` table that would have orphaned every row on restore. A guard had to fire on its author, and did. A production incident had to be triaged under pressure with three hypotheses eliminated on evidence before a rollback was chosen. This is the difficulty of *operations and integration*, which is undervalued precisely because it is invisible when it works.
 
-**What level of responsibility he demonstrably operated at.** Senior-to-staff **breadth**, carried alone. He held the merge gate on 96% of pull requests, authored the requirements that his AI implemented against, rejected work that had already been written when it violated a contract he had set, wrote ten numbered process rules that constrain his AI collaborator, and made production calls with real cost. Sixteen traditionally separate functions have artifacts under his name. But every one of those bands is normally defined half by behaviour toward other engineers, and that half is entirely absent. He has directed, reviewed, gated, and corrected an AI across ~1,460 commits — a real analogue, and the closest thing available — but an AI does not disagree from experience, does not need persuading, and cannot be mentored.
+**What level of responsibility he demonstrably operated at.** Senior-to-staff **breadth**, carried alone. He held the merge gate on 96% of pull requests, authored the requirements that his AI implemented against, rejected work that had already been written when it violated a contract he had set, wrote ten numbered process rules that constrain his AI collaborator, and made production calls with real cost. Sixteen traditionally separate functions have artifacts under his name. But every one of those bands is normally defined half by behaviour toward other engineers, and that half is entirely absent. He has directed, reviewed, gated, and corrected an AI across 2,349 commits — a real analogue, and the closest thing available — but an AI does not disagree from experience, does not need persuading, and cannot be mentored.
 
 **What makes this evidence ordinary, and what makes it unusual.** Ordinary: the technology choices are conventional, the systems are small, the user base is one pharmacy, and the repository count badly overstates the scope. There is roughly 2.5 MB of documentation re-narrating one body of work, three large repositories whose contents I could verify only by file listing, and a public presentation layer that is four renderings of two documents. Unusual — and this is the finding that most distinguishes the corpus: **he repeatedly builds machinery whose only purpose is to stop him and his AI from believing things that are not true.** A test that mechanically forbids the AI from touching the product's core. A documentation-freshness check that fails the build. A backup step that goes red if the dump went nowhere. A module that measures his assistant's flattery toward him and feeds the number back into its prompt, with its own limitations written into the comment. A proof document that publishes its own 30% failure rate. Most builders at every level build instrumentation that flatters them. This corpus consistently builds instrumentation that can convict — and the record shows it convicting.
 
